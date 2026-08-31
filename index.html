@@ -1,0 +1,1725 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUMINA | Roupas & Acessórios</title>
+  
+  <style>
+    /* --------------------------------------------------
+       1. RESET E VARIÁVEIS GLOBAIS
+    -------------------------------------------------- */
+    :root {
+      --bg-color: #f4f4f4;
+      --card-bg: #ffffff;
+      --header-bg: #1a1a1a;        /* Grafite escuro para destaque */
+      --header-text: #ffffff;      /* Texto claro para contraste */
+      --text-main: #111111;
+      --text-muted: #666666;
+      --accent: #1a1a1a;
+      --price-color: #d0011b;
+      --fav-color: #e63946;
+      --radius: 8px;
+      --transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    /* --------------------------------------------------
+       2. CABEÇALHO COM COR DE DESTAQUE
+    -------------------------------------------------- */
+    header {
+      position: sticky;
+      top: 0;
+      background: var(--header-bg);
+      color: var(--header-text);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      padding: 15px 5%;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .header-top {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: var(--header-text);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-btn {
+      position: relative;
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+    }
+
+    .header-btn svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: var(--header-text);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--price-color);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .search-container {
+      width: 100%;
+      max-width: 1100px;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 12px 18px 12px 42px;
+      border: 1px solid #333333;
+      border-radius: 20px;
+      background-color: #2a2a2a;
+      color: #ffffff;
+      font-size: 0.95rem;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .search-input::placeholder {
+      color: #aaaaaa;
+    }
+
+    .search-input:focus {
+      background-color: #ffffff;
+      color: var(--text-main);
+      border-color: #ffffff;
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.2);
+    }
+
+    .search-icon-svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      stroke: #aaaaaa;
+      stroke-width: 2;
+      fill: none;
+      pointer-events: none;
+    }
+
+    .active-category-bar {
+      max-width: 1100px;
+      width: 100%;
+      margin: 15px auto 0;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .active-category-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .clear-category-btn {
+      background: #e0e0e0;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    /* --------------------------------------------------
+       3. GRID MARKETPLACE
+    -------------------------------------------------- */
+    .container {
+      max-width: 1100px;
+      margin: 20px auto;
+      padding: 0 12px;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    @media (min-width: 850px) {
+      .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+    }
+
+    .product-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #eaeaea;
+      position: relative;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+      border-color: #ddd;
+    }
+
+    .card-fav-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.85);
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 2;
+      backdrop-filter: blur(2px);
+      transition: var(--transition);
+    }
+
+    .card-fav-btn svg {
+      width: 18px;
+      height: 18px;
+      stroke: #444;
+      stroke-width: 2;
+      fill: none;
+      transition: var(--transition);
+    }
+
+    .card-fav-btn.active svg {
+      fill: var(--fav-color);
+      stroke: var(--fav-color);
+    }
+
+    .product-image-wrap {
+      width: 100%;
+      padding-top: 100%;
+      position: relative;
+      background: #fafafa;
+    }
+
+    .product-image-wrap img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .product-card:hover .product-image-wrap img {
+      transform: scale(1.04);
+    }
+
+    .product-info {
+      padding: 10px 12px 14px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: space-between;
+    }
+
+    .product-title {
+      font-size: 0.88rem;
+      font-weight: 500;
+      line-height: 1.3;
+      margin-bottom: 8px;
+      color: #222;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .product-price {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--price-color);
+    }
+
+    /* --------------------------------------------------
+       4. MODAL COM GALERIA DE FOTOS E ZOOM
+    -------------------------------------------------- */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+      z-index: 100;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      width: 92%;
+      max-width: 850px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr;
+      position: relative;
+      transform: scale(0.92);
+      transition: var(--transition);
+      max-height: 90vh;
+    }
+
+    @media (min-width: 700px) {
+      .modal-content {
+        grid-template-columns: 1.1fr 1fr;
+      }
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: scale(1);
+    }
+
+    .close-btn-svg {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.85);
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(2px);
+    }
+
+    .close-btn-svg svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--text-main);
+      stroke-width: 2;
+    }
+
+    .modal-gallery-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 15px;
+      background: #fafafa;
+    }
+
+    .zoom-container {
+      position: relative;
+      width: 100%;
+      height: 300px;
+      overflow: hidden;
+      border-radius: 6px;
+      cursor: zoom-in;
+    }
+
+    @media (min-width: 700px) {
+      .zoom-container {
+        height: 380px;
+      }
+    }
+
+    .zoom-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform-origin: center center;
+      transition: transform 0.15s ease-out;
+    }
+
+    .thumbnails-row {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+    }
+
+    .thumb-img {
+      width: 55px;
+      height: 55px;
+      border-radius: 4px;
+      object-fit: cover;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: var(--transition);
+      opacity: 0.6;
+    }
+
+    .thumb-img.active, .thumb-img:hover {
+      border-color: var(--accent);
+      opacity: 1;
+    }
+
+    .modal-details {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .modal-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .modal-price {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--price-color);
+      margin-bottom: 12px;
+    }
+
+    .modal-description {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .size-selector {
+      margin-bottom: 20px;
+    }
+
+    .size-selector p {
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .sizes {
+      display: flex;
+      gap: 8px;
+    }
+
+    .size-btn {
+      border: 1px solid #ddd;
+      background: #fff;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 0.85rem;
+    }
+
+    .size-btn:hover, .size-btn.selected {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .add-to-cart {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    /* --------------------------------------------------
+       5. BARRA DE PROGRESSO DE ETAPAS (DINÂMICA)
+    -------------------------------------------------- */
+    .cart-progress-wrap {
+      background: #ffffff;
+      padding: 16px 20px;
+      border-bottom: 1px solid #eaeaea;
+    }
+
+    .progress-text {
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-main);
+    }
+
+    .progress-points-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .progress-line-bg {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: #e0e0e0;
+      z-index: 1;
+      transform: translateY(-50%);
+    }
+
+    .progress-line-fill {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      height: 4px;
+      background: #27ae60;
+      z-index: 1;
+      transform: translateY(-50%);
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    .point-step {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #fff;
+      border: 3px solid #e0e0e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 800;
+      z-index: 2;
+      transition: var(--transition);
+      color: #888;
+      position: relative;
+    }
+
+    .point-step.achieved {
+      border-color: #27ae60;
+      background: #27ae60;
+      color: #fff;
+    }
+
+    .point-label {
+      position: absolute;
+      top: 36px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      white-space: nowrap;
+      color: var(--text-muted);
+    }
+
+    /* --------------------------------------------------
+       6. OVERLAYS FULLSCREEN
+    -------------------------------------------------- */
+    .fullscreen-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      height: 100dvh;
+      background: #ffffff;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .fullscreen-overlay.active {
+      transform: translateY(0);
+    }
+
+    .overlay-header {
+      padding: 16px 5%;
+      border-bottom: 1px solid #eaeaea;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+    }
+
+    .overlay-header h2 {
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+
+    .overlay-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 12px;
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* CATEGORIAS */
+    .categories-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .category-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px;
+      background: #f9f9f9;
+      border-radius: var(--radius);
+      border: 1px solid #eee;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .category-item:hover, .category-item.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .category-item svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+    }
+
+    /* SACOLA DE COMPRAS */
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .cart-item-img {
+      width: 70px;
+      height: 70px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+
+    .cart-item-info {
+      flex: 1;
+    }
+
+    .cart-item-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    .cart-item-size {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .cart-item-unit-price {
+      font-size: 0.75rem;
+      color: #777;
+    }
+
+    .cart-item-subtotal {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--price-color);
+      margin-top: 2px;
+    }
+
+    .cart-item-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .quantity-control {
+      display: flex;
+      align-items: center;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .qty-btn {
+      background: #f8f8f8;
+      border: none;
+      width: 28px;
+      height: 28px;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .qty-number {
+      padding: 0 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .remove-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 2px;
+    }
+
+    .remove-btn svg {
+      width: 18px;
+      height: 18px;
+      stroke: #888;
+    }
+
+    .empty-msg {
+      text-align: center;
+      margin-top: 60px;
+      color: var(--text-muted);
+    }
+
+    .cart-footer {
+      padding: 16px 5%;
+      border-top: 1px solid #eaeaea;
+      background: #ffffff;
+      box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      bottom: 0;
+      z-index: 10;
+    }
+
+    .cart-footer-wrapper {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .cart-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.15rem;
+      font-weight: 800;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 15px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .checkout-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    /* SPINNER DE CARREGAMENTO */
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 0.8s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* FORMULÁRIOS DE CHECKOUT */
+    .delivery-options {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .delivery-type-btn {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: var(--radius);
+      background: #f9f9f9;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    .delivery-type-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: var(--accent);
+    }
+
+    .city-badge {
+      display: inline-block;
+      background: #e8f5e9;
+      color: #2e7d32;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+
+    /* REVISÃO DO PEDIDO (NOTA FISCAL SIMULADA) */
+    .receipt-box {
+      background: #fbfbfb;
+      border: 1px dashed #ccc;
+      padding: 18px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      margin-bottom: 20px;
+      white-space: pre-wrap;
+    }
+
+    /* --------------------------------------------------
+       7. RODAPÉ COM COR DE DESTAQUE
+    -------------------------------------------------- */
+    footer {
+      background-color: var(--header-bg);
+      color: #ffffff;
+      padding: 40px 20px 20px;
+      margin-top: 50px;
+    }
+
+    .footer-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    .footer-col h4 {
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #ffffff;
+    }
+
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 8px; }
+    .footer-col ul li a { text-decoration: none; color: #bbbbbb; font-size: 0.88rem; transition: var(--transition); }
+    .footer-col ul li a:hover { color: #ffffff; }
+
+    .footer-bottom {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding-top: 20px;
+      border-top: 1px solid #333333;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #aaaaaa;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-top">
+      <div class="logo" onclick="filterCategory('Todas')">LUMINA</div>
+      <div class="header-actions">
+        <button class="header-btn" onclick="openCategories()" title="Categorias">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        </button>
+        <button class="header-btn" onclick="openFavorites()" title="Favoritos">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+          <span class="badge" id="favBadge">0</span>
+        </button>
+        <button class="header-btn" onclick="openCart()" title="Sacola">
+          <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+          <span class="badge" id="cartBadge">0</span>
+        </button>
+      </div>
+    </div>
+    <div class="search-container">
+      <svg class="search-icon-svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input type="text" id="searchInput" class="search-input" placeholder="Buscar roupas, acessórios e mais..." oninput="filterProducts()" />
+    </div>
+  </header>
+
+  <main>
+    <div class="active-category-bar" id="categoryBar" style="display: none;">
+      <span class="active-category-title" id="categoryTitle"></span>
+      <button class="clear-category-btn" onclick="filterCategory('Todas')">Limpar Filtro ✕</button>
+    </div>
+
+    <div class="container">
+      <div class="products-grid" id="productsGrid"></div>
+    </div>
+  </main>
+
+  <div class="fullscreen-overlay" id="categoriesFullscreen">
+    <div class="overlay-header">
+      <h2>Categorias</h2>
+      <button class="close-btn-svg" style="position: static;" onclick="closeCategories()">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    <div class="overlay-body">
+      <div class="categories-list" id="categoriesList"></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="productModal">
+    <div class="modal-content">
+      <button class="close-btn-svg" onclick="closeModal()">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+
+      <div class="modal-gallery-wrap">
+        <div class="zoom-container" id="zoomArea" onmousemove="handleZoom(event)" onmouseleave="resetZoom()">
+          <img src="" id="modalImgMain" alt="" />
+        </div>
+        <div class="thumbnails-row" id="thumbnailsRow"></div>
+      </div>
+
+      <div class="modal-details">
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <div class="modal-price" id="modalPrice"></div>
+        <p class="modal-description" id="modalDesc"></p>
+        
+        <div class="size-selector">
+          <p>TAMANHO</p>
+          <div class="sizes">
+            <button class="size-btn selected">P</button>
+            <button class="size-btn">M</button>
+            <button class="size-btn">G</button>
+            <button class="size-btn">GG</button>
+          </div>
+        </div>
+
+        <button class="add-to-cart" onclick="addToCartFromModal()">Adicionar à Sacola</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="fullscreen-overlay" id="favFullscreen">
+    <div class="overlay-header">
+      <h2>Meus Favoritos</h2>
+      <button class="close-btn-svg" style="position: static;" onclick="closeFavorites()">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    <div class="overlay-body">
+      <div class="products-grid" id="favoritesGrid"></div>
+    </div>
+  </div>
+
+  <div class="fullscreen-overlay" id="cartFullscreen">
+    <div class="overlay-header">
+      <h2>Sua Sacola</h2>
+      <button class="close-btn-svg" style="position: static;" onclick="closeCart()">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+
+    <div class="cart-progress-wrap">
+      <div class="progress-text">
+        <span id="progressTextLabel">Etapa 1 de 3: Sacola</span>
+        <span id="progressTextPercent">33%</span>
+      </div>
+      <div class="progress-points-container">
+        <div class="progress-line-bg"></div>
+        <div class="progress-line-fill" id="progressLineFill"></div>
+        <div class="point-step achieved" id="step1">
+          1 <span class="point-label">Sacola</span>
+        </div>
+        <div class="point-step" id="step2">
+          2 <span class="point-label">Entrega</span>
+        </div>
+        <div class="point-step" id="step3">
+          3 <span class="point-label">Revisão</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="overlay-body">
+      <div id="cartBody"></div>
+    </div>
+
+    <div class="cart-footer">
+      <div class="cart-footer-wrapper">
+        <div class="cart-total-row">
+          <span>Total</span>
+          <span id="cartTotal">R$ 0,00</span>
+        </div>
+        <button class="checkout-btn" id="btnProceedToCheckout" onclick="proceedToCheckout()">
+          <span class="spinner" id="cartSpinner"></span>
+          <span id="btnProceedText">Prosseguir para Entrega</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="fullscreen-overlay" id="checkoutStep1">
+    <div class="overlay-header">
+      <h2>Opções de Entrega</h2>
+      <button class="close-btn-svg" style="position: static;" onclick="closeCheckoutStep1()">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+
+    <div class="cart-progress-wrap">
+      <div class="progress-text">
+        <span>Etapa 2 de 3: Dados de Entrega</span>
+        <span>66%</span>
+      </div>
+      <div class="progress-points-container">
+        <div class="progress-line-bg"></div>
+        <div class="progress-line-fill" style="width: 50%;"></div>
+        <div class="point-step achieved">1 <span class="point-label">Sacola</span></div>
+        <div class="point-step achieved">2 <span class="point-label">Entrega</span></div>
+        <div class="point-step">3 <span class="point-label">Revisão</span></div>
+      </div>
+    </div>
+    
+    <div class="overlay-body">
+      <div class="delivery-options">
+        <button class="delivery-type-btn active" id="btnTypeDelivery" onclick="setDeliveryType('delivery')">Entrega Local</button>
+        <button class="delivery-type-btn" id="btnTypePickup" onclick="setDeliveryType('pickup')">Retirar com Vendedor</button>
+      </div>
+
+      <div id="formDelivery">
+        <div class="city-badge">📍 Chapadinha - MA</div>
+        <div class="form-group">
+          <label>Bairro *</label>
+          <input type="text" id="inpBairro" class="form-control" placeholder="Ex: Centro">
+        </div>
+        <div class="form-group">
+          <label>Rua *</label>
+          <input type="text" id="inpRua" class="form-control" placeholder="Ex: Rua Gustavo Barbosa">
+        </div>
+        <div class="form-group">
+          <label>Número *</label>
+          <input type="text" id="inpNumero" class="form-control" placeholder="Ex: 123">
+        </div>
+        <div class="form-group">
+          <label>Contato (WhatsApp) *</label>
+          <input type="tel" id="inpContato" class="form-control" placeholder="(99) 99999-9999">
+        </div>
+        <div class="form-group">
+          <label>CPF *</label>
+          <input type="text" id="inpCpf" class="form-control" placeholder="000.000.000-00">
+        </div>
+        <div class="form-group">
+          <label>Ponto de Referência</label>
+          <input type="text" id="inpRef" class="form-control" placeholder="Ex: Próximo à praça">
+        </div>
+        <div class="form-group">
+          <label>Nota / Observação</label>
+          <input type="text" id="inpNota" class="form-control" placeholder="Ex: Entregar após as 14h">
+        </div>
+      </div>
+
+      <div id="formPickup" style="display: none;">
+        <div class="form-group">
+          <label>Nome Completo *</label>
+          <input type="text" id="inpNomePickup" class="form-control" placeholder="Seu nome completo">
+        </div>
+        <div class="form-group">
+          <label>CPF *</label>
+          <input type="text" id="inpCpfPickup" class="form-control" placeholder="000.000.000-00">
+        </div>
+      </div>
+    </div>
+
+    <div class="cart-footer">
+      <div class="cart-footer-wrapper">
+        <button class="checkout-btn" id="btnProceedToReview" onclick="proceedToReview()">
+          <span class="spinner" id="reviewSpinner"></span>
+          <span id="btnReviewText">Prosseguir para Revisão</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="fullscreen-overlay" id="checkoutStep2">
+    <div class="overlay-header">
+      <h2>Revisar & Finalizar</h2>
+      <button class="close-btn-svg" style="position: static;" onclick="closeCheckoutStep2()">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+
+    <div class="cart-progress-wrap">
+      <div class="progress-text">
+        <span>Etapa 3 de 3: Revisão & WhatsApp</span>
+        <span>100%</span>
+      </div>
+      <div class="progress-points-container">
+        <div class="progress-line-bg"></div>
+        <div class="progress-line-fill" style="width: 100%;"></div>
+        <div class="point-step achieved">1 <span class="point-label">Sacola</span></div>
+        <div class="point-step achieved">2 <span class="point-label">Entrega</span></div>
+        <div class="point-step achieved">3 <span class="point-label">Revisão</span></div>
+      </div>
+    </div>
+
+    <div class="overlay-body">
+      <p style="font-size: 0.9rem; color: #555; margin-bottom: 12px;">Confira a nota do seu pedido antes de ser redirecionado ao WhatsApp:</p>
+      <div class="receipt-box" id="receiptPreview"></div>
+    </div>
+
+    <div class="cart-footer">
+      <div class="cart-footer-wrapper">
+        <button class="checkout-btn" style="background: #25D366;" id="btnSendWhatsapp" onclick="sendOrderToWhatsapp()">
+          <span class="spinner" id="waSpinner"></span>
+          <span id="btnWaText">Finalizar no WhatsApp</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-col">
+        <h4>Atendimento</h4>
+        <ul>
+          <li><a href="#">Central de Ajuda</a></li>
+          <li><a href="#">Como Comprar</a></li>
+          <li><a href="#">Envios e Entregas</a></li>
+          <li><a href="#">Trocas e Devoluções</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Sobre a Lumina</h4>
+        <ul>
+          <li><a href="#">Quem Somos</a></li>
+          <li><a href="#">Políticas de Privacidade</a></li>
+          <li><a href="#">Trabalhe Conosco</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Redes Sociais</h4>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">TikTok</a></li>
+          <li><a href="#">Pinterest</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 LUMINA Roupas & Acessórios. Todos os direitos reservados.
+    </div>
+  </footer>
+
+  <script>
+    const products = [
+      {
+        id: 1,
+        title: "Jaqueta Oversized Heavy Denim Preto Lavado",
+        category: "Jaquetas",
+        priceNumber: 349.90,
+        images: [
+          "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1548883354-7622d03aca27?auto=format&fit=crop&w=800&q=80"
+        ],
+        description: "Jaqueta produzida em sarja pesada 100% algodão com modelagem oversized."
+      },
+      {
+        id: 2,
+        title: "Óculos de Sol Matte Black Polarizado UV400",
+        category: "Acessórios",
+        priceNumber: 189.00,
+        images: [
+          "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=800&q=80"
+        ],
+        description: "Armação em acetato fosco com lentes polarizadas."
+      },
+      {
+        id: 3,
+        title: "Camisa de Linho Off-White Manga Longa",
+        category: "Camisas",
+        priceNumber: 229.90,
+        images: [
+          "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=800&q=80"
+        ],
+        description: "Camisa confeccionada em mistura de linho e algodão respirável."
+      },
+      {
+        id: 4,
+        title: "Bolsa Minimalista Leather Structured",
+        category: "Bolsas",
+        priceNumber: 419.90,
+        images: [
+          "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=800&q=80"
+        ],
+        description: "Bolsa em couro ecológico de alta durabilidade."
+      }
+    ];
+
+    let cart = [];
+    let favorites = [];
+    let activeProduct = null;
+    let selectedCategory = "Todas";
+    let deliveryType = "delivery";
+    let currentStep = 1;
+
+    const grid = document.getElementById("productsGrid");
+    const favGrid = document.getElementById("favoritesGrid");
+    const modal = document.getElementById("productModal");
+    const cartFullscreen = document.getElementById("cartFullscreen");
+    const favFullscreen = document.getElementById("favFullscreen");
+    const categoriesFullscreen = document.getElementById("categoriesFullscreen");
+    const checkoutStep1 = document.getElementById("checkoutStep1");
+    const checkoutStep2 = document.getElementById("checkoutStep2");
+
+    function formatCurrency(val) {
+      return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    /* BARRA DE PROGRESSO */
+    function updateProgressStep(step) {
+      currentStep = step;
+      const fill = document.getElementById("progressLineFill");
+      const label = document.getElementById("progressTextLabel");
+      const percent = document.getElementById("progressTextPercent");
+
+      const step1El = document.getElementById("step1");
+      const step2El = document.getElementById("step2");
+      const step3El = document.getElementById("step3");
+
+      if (step === 1) {
+        fill.style.width = "0%";
+        label.textContent = "Etapa 1 de 3: Sacola";
+        percent.textContent = "33%";
+        step1El.classList.add("achieved");
+        step2El.classList.remove("achieved");
+        step3El.classList.remove("achieved");
+      } else if (step === 2) {
+        fill.style.width = "50%";
+        label.textContent = "Etapa 2 de 3: Dados de Entrega";
+        percent.textContent = "66%";
+        step1El.classList.add("achieved");
+        step2El.classList.add("achieved");
+        step3El.classList.remove("achieved");
+      } else if (step === 3) {
+        fill.style.width = "100%";
+        label.textContent = "Etapa 3 de 3: Revisão & WhatsApp";
+        percent.textContent = "100%";
+        step1El.classList.add("achieved");
+        step2El.classList.add("achieved");
+        step3El.classList.add("achieved");
+      }
+    }
+
+    /* CATEGORIAS */
+    function openCategories() {
+      renderCategoriesList();
+      categoriesFullscreen.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeCategories() {
+      categoriesFullscreen.classList.remove("active");
+      document.body.style.overflow = "auto";
+    }
+
+    function renderCategoriesList() {
+      const categories = ["Todas", ...new Set(products.map(p => p.category))];
+      document.getElementById("categoriesList").innerHTML = categories.map(cat => `
+        <div class="category-item ${selectedCategory === cat ? 'active' : ''}" onclick="filterCategory('${cat}')">
+          <span>${cat}</span>
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
+      `).join('');
+    }
+
+    function filterCategory(catName) {
+      selectedCategory = catName;
+      closeCategories();
+      const categoryBar = document.getElementById("categoryBar");
+      if (selectedCategory === "Todas") {
+        categoryBar.style.display = "none";
+      } else {
+        document.getElementById("categoryTitle").textContent = `Categoria: ${selectedCategory}`;
+        categoryBar.style.display = "flex";
+      }
+      filterProducts();
+    }
+
+    /* VITRINE */
+    function createCardHTML(p) {
+      const isFav = favorites.includes(p.id);
+      return `
+        <div class="product-card" onclick="openModal(${p.id})">
+          <button class="card-fav-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite(event, ${p.id})">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+          </button>
+          <div class="product-image-wrap">
+            <img src="${p.images[0]}" alt="${p.title}" loading="lazy">
+          </div>
+          <div class="product-info">
+            <h3 class="product-title">${p.title}</h3>
+            <div class="product-price">${formatCurrency(p.priceNumber)}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderProducts(items) {
+      if (items.length === 0) {
+        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:#888;">Nenhum produto encontrado.</div>`;
+        return;
+      }
+      grid.innerHTML = items.map(p => createCardHTML(p)).join('');
+    }
+
+    function filterProducts() {
+      const query = document.getElementById("searchInput").value.toLowerCase();
+      const filtered = products.filter(p => {
+        const matchesCategory = selectedCategory === "Todas" || p.category === selectedCategory;
+        const matchesSearch = p.title.toLowerCase().includes(query) || p.description.toLowerCase().includes(query);
+        return matchesCategory && matchesSearch;
+      });
+      renderProducts(filtered);
+    }
+
+    /* FAVORITOS */
+    function toggleFavorite(event, id) {
+      event.stopPropagation();
+      if (favorites.includes(id)) {
+        favorites = favorites.filter(favId => favId !== id);
+      } else {
+        favorites.push(id);
+      }
+      document.getElementById("favBadge").textContent = favorites.length;
+      filterProducts();
+      if (favFullscreen.classList.contains("active")) renderFavorites();
+    }
+
+    function openFavorites() {
+      favFullscreen.classList.add("active");
+      document.body.style.overflow = "hidden";
+      renderFavorites();
+    }
+
+    function closeFavorites() {
+      favFullscreen.classList.remove("active");
+      document.body.style.overflow = "auto";
+    }
+
+    function renderFavorites() {
+      const favProducts = products.filter(p => favorites.includes(p.id));
+      if (favProducts.length === 0) {
+        favGrid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:#888;">Nenhum produto favoritado.</div>`;
+        return;
+      }
+      favGrid.innerHTML = favProducts.map(p => createCardHTML(p)).join('');
+    }
+
+    /* MODAL PRODUTO & ZOOM */
+    function openModal(id) {
+      activeProduct = products.find(p => p.id === id);
+      if (!activeProduct) return;
+
+      document.getElementById("modalTitle").textContent = activeProduct.title;
+      document.getElementById("modalPrice").textContent = formatCurrency(activeProduct.priceNumber);
+      document.getElementById("modalDesc").textContent = activeProduct.description;
+
+      document.getElementById("modalImgMain").src = activeProduct.images[0];
+      document.getElementById("thumbnailsRow").innerHTML = activeProduct.images.map((imgUrl, index) => `
+        <img src="${imgUrl}" class="thumb-img ${index === 0 ? 'active' : ''}" onclick="changeMainImage('${imgUrl}', this)">
+      `).join('');
+
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+
+    function changeMainImage(url, element) {
+      document.getElementById("modalImgMain").src = url;
+      document.querySelectorAll(".thumb-img").forEach(t => t.classList.remove("active"));
+      element.classList.add("active");
+    }
+
+    function handleZoom(e) {
+      const img = document.getElementById("modalImgMain");
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      img.style.transformOrigin = `${x}% ${y}%`;
+      img.style.transform = "scale(2)";
+    }
+
+    function resetZoom() {
+      const img = document.getElementById("modalImgMain");
+      img.style.transform = "scale(1)";
+      img.style.transformOrigin = "center center";
+    }
+
+    function closeModal() {
+      modal.classList.remove("active");
+      document.body.style.overflow = "auto";
+      resetZoom();
+    }
+
+    modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
+
+    /* SACOLA & NAVEGAÇÃO */
+    function openCart() {
+      updateProgressStep(1);
+      cartFullscreen.classList.add("active");
+      document.body.style.overflow = "hidden";
+      renderCart();
+    }
+
+    function closeCart() {
+      cartFullscreen.classList.remove("active");
+      document.body.style.overflow = "auto";
+    }
+
+    function addToCartFromModal() {
+      if (!activeProduct) return;
+      const selectedSize = document.querySelector(".size-btn.selected")?.textContent || "M";
+      const existingIndex = cart.findIndex(item => item.id === activeProduct.id && item.size === selectedSize);
+
+      if (existingIndex > -1) {
+        cart[existingIndex].qty += 1;
+      } else {
+        cart.push({ ...activeProduct, size: selectedSize, qty: 1 });
+      }
+
+      updateCartBadge();
+      closeModal();
+      openCart();
+    }
+
+    function updateQuantity(id, size, delta) {
+      const index = cart.findIndex(item => item.id === id && item.size === size);
+      if (index > -1) {
+        cart[index].qty += delta;
+        if (cart[index].qty <= 0) cart.splice(index, 1);
+      }
+      renderCart();
+      updateCartBadge();
+    }
+
+    function removeItem(id, size) {
+      cart = cart.filter(item => !(item.id === id && item.size === size));
+      renderCart();
+      updateCartBadge();
+    }
+
+    function updateCartBadge() {
+      const totalItems = cart.reduce((acc, item) => acc + item.qty, 0);
+      document.getElementById("cartBadge").textContent = totalItems;
+    }
+
+    function renderCart() {
+      const cartBody = document.getElementById("cartBody");
+      const cartTotal = document.getElementById("cartTotal");
+      const btnProceed = document.getElementById("btnProceedToCheckout");
+
+      if (cart.length === 0) {
+        cartBody.innerHTML = `<div class="empty-msg">Sua sacola está vazia.</div>`;
+        cartTotal.textContent = formatCurrency(0);
+        btnProceed.disabled = true;
+        return;
+      }
+
+      btnProceed.disabled = false;
+      let total = 0;
+
+      cartBody.innerHTML = cart.map(item => {
+        const itemSubtotal = item.priceNumber * item.qty;
+        total += itemSubtotal;
+
+        return `
+          <div class="cart-item">
+            <img src="${item.images[0]}" alt="${item.title}" class="cart-item-img">
+            <div class="cart-item-info">
+              <div class="cart-item-title">${item.title}</div>
+              <div class="cart-item-size">Tamanho: ${item.size}</div>
+              <div class="cart-item-unit-price">Unitário: ${formatCurrency(item.priceNumber)}</div>
+              <div class="cart-item-subtotal">Subtotal: ${formatCurrency(itemSubtotal)}</div>
+            </div>
+            <div class="cart-item-controls">
+              <button class="remove-btn" onclick="removeItem(${item.id}, '${item.size}')">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+              </button>
+              <div class="quantity-control">
+                <button class="qty-btn" onclick="updateQuantity(${item.id}, '${item.size}', -1)">-</button>
+                <span class="qty-number">${item.qty}</span>
+                <button class="qty-btn" onclick="updateQuantity(${item.id}, '${item.size}', 1)">+</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      cartTotal.textContent = formatCurrency(total);
+    }
+
+    /* TRANSIÇÕES DE CHECKOUT COM LOADING & NOTA FISCAL FORMATADA */
+    function proceedToCheckout() {
+      const spinner = document.getElementById("cartSpinner");
+      const btnText = document.getElementById("btnProceedText");
+
+      spinner.style.display = "inline-block";
+      btnText.textContent = "Carregando...";
+
+      setTimeout(() => {
+        spinner.style.display = "none";
+        btnText.textContent = "Prosseguir para Entrega";
+        updateProgressStep(2);
+        checkoutStep1.classList.add("active");
+      }, 900);
+    }
+
+    function closeCheckoutStep1() {
+      checkoutStep1.classList.remove("active");
+      updateProgressStep(1);
+    }
+
+    function closeCheckoutStep2() {
+      checkoutStep2.classList.remove("active");
+      updateProgressStep(2);
+    }
+
+    function setDeliveryType(type) {
+      deliveryType = type;
+      if (type === 'delivery') {
+        document.getElementById("btnTypeDelivery").classList.add("active");
+        document.getElementById("btnTypePickup").classList.remove("active");
+        document.getElementById("formDelivery").style.display = "block";
+        document.getElementById("formPickup").style.display = "none";
+      } else {
+        document.getElementById("btnTypePickup").classList.add("active");
+        document.getElementById("btnTypeDelivery").classList.remove("active");
+        document.getElementById("formDelivery").style.display = "none";
+        document.getElementById("formPickup").style.display = "block";
+      }
+    }
+
+    function proceedToReview() {
+      if (deliveryType === 'delivery') {
+        const bairro = document.getElementById("inpBairro").value;
+        const rua = document.getElementById("inpRua").value;
+        const numero = document.getElementById("inpNumero").value;
+        const contato = document.getElementById("inpContato").value;
+        const cpf = document.getElementById("inpCpf").value;
+
+        if (!bairro || !rua || !numero || !contato || !cpf) {
+          alert("Por favor, preencha todos os campos obrigatórios (*).");
+          return;
+        }
+      } else {
+        const nome = document.getElementById("inpNomePickup").value;
+        const cpf = document.getElementById("inpCpfPickup").value;
+
+        if (!nome || !cpf) {
+          alert("Por favor, preencha o Nome e o CPF.");
+          return;
+        }
+      }
+
+      const spinner = document.getElementById("reviewSpinner");
+      const btnText = document.getElementById("btnReviewText");
+
+      spinner.style.display = "inline-block";
+      btnText.textContent = "Validando dados...";
+
+      setTimeout(() => {
+        spinner.style.display = "none";
+        btnText.textContent = "Prosseguir para Revisão";
+        renderReceiptPreview();
+        updateProgressStep(3);
+        checkoutStep2.classList.add("active");
+      }, 900);
+    }
+
+    /* GERADOR DA NOTA FISCAL FORMATADA */
+    function generateReceiptText() {
+      let total = cart.reduce((acc, i) => acc + (i.priceNumber * i.qty), 0);
+      let text = `==============================\n`;
+      text += `       LUMINA STORE - NOTA    \n`;
+      text += `==============================\n\n`;
+      text += `ITENS DO PEDIDO:\n`;
+
+      cart.forEach(item => {
+        text += `- ${item.title} (${item.size})\n  ${item.qty}x ${formatCurrency(item.priceNumber)} = ${formatCurrency(item.priceNumber * item.qty)}\n`;
+      });
+
+      text += `\n------------------------------\n`;
+      text += `TOTAL: ${formatCurrency(total)}\n`;
+      text += `------------------------------\n\n`;
+      text += `DADOS DE ENTREGA:\n`;
+
+      if (deliveryType === 'delivery') {
+        text += `Tipo: Entrega Local (Chapadinha - MA)\n`;
+        text += `Bairro: ${document.getElementById("inpBairro").value}\n`;
+        text += `Rua: ${document.getElementById("inpRua").value}, Nº ${document.getElementById("inpNumero").value}\n`;
+        text += `Contato: ${document.getElementById("inpContato").value}\n`;
+        text += `CPF: ${document.getElementById("inpCpf").value}\n`;
+        if (document.getElementById("inpRef").value) text += `Ref: ${document.getElementById("inpRef").value}\n`;
+        if (document.getElementById("inpNota").value) text += `Nota: ${document.getElementById("inpNota").value}\n`;
+      } else {
+        text += `Tipo: Retirar com o Vendedor\n`;
+        text += `Nome: ${document.getElementById("inpNomePickup").value}\n`;
+        text += `CPF: ${document.getElementById("inpCpfPickup").value}\n`;
+      }
+
+      text += `==============================`;
+      return text;
+    }
+
+    function renderReceiptPreview() {
+      const receipt = generateReceiptText();
+      document.getElementById("receiptPreview").textContent = receipt;
+    }
+
+    function sendOrderToWhatsapp() {
+      const spinner = document.getElementById("waSpinner");
+      const btnText = document.getElementById("btnWaText");
+
+      spinner.style.display = "inline-block";
+      btnText.textContent = "Redirecionando...";
+
+      setTimeout(() => {
+        const text = generateReceiptText();
+        const encodedText = encodeURIComponent(text);
+        const phone = "5598991762926"; // Seu WhatsApp adicionado
+        window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${encodedText}`, '_blank');
+
+        spinner.style.display = "none";
+        btnText.textContent = "Finalizar no WhatsApp";
+      }, 1200);
+    }
+
+    renderProducts(products);
+  </script>
+</body>
+</html>
