@@ -1,0 +1,4400 @@
+<!DOCTYPE html><html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Vida & Império</title><script src="https://unpkg.com/lucide@latest"></script><style>
+:root{
+    --bg:#0f172a;
+    --surface:#1e293b;
+    --surface2:#334155;
+    --text:#f8fafc;
+    --muted:#94a3b8;
+    --primary:#6366f1;
+    --primary-hover:#4f46e5;
+    --primary-light:rgba(99,102,241,.15);
+    --green:#10b981;
+    --red:#ef4444;
+    --orange:#f59e0b;
+    --blue:#06b6d4;
+    --border:#334155;
+    --shadow:0 10px 25px -5px rgba(0,0,0,.3);
+    --radius:16px;
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html{
+    min-height:100%;
+}
+
+body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    padding-bottom:90px;
+    min-height:100vh;
+}
+
+button,input,select{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+    border:0;
+    outline:none;
+}
+
+button:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+}
+
+.app{
+    max-width:1400px;
+    margin:auto;
+    padding:0 10px;
+}
+
+header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(15,23,42,.97);
+    backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--border);
+    margin-bottom:20px;
+}
+
+.header-inner{
+    min-height:70px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    padding:10px 15px;
+}
+
+.logo{
+    font-size:20px;
+    font-weight:900;
+    white-space:nowrap;
+    display:flex;
+    align-items:center;
+    gap:7px;
+}
+
+.logo svg{
+    width:22px;
+    height:22px;
+}
+
+.logo span{
+    color:var(--primary);
+}
+
+.desktop-nav{
+    display:flex;
+    gap:4px;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+.nav-btn{
+    background:transparent;
+    color:var(--muted);
+    padding:9px 10px;
+    border-radius:12px;
+    font-weight:700;
+    font-size:12px;
+    display:flex;
+    align-items:center;
+    gap:5px;
+    transition:.2s;
+}
+
+.nav-btn svg{
+    width:16px;
+    height:16px;
+}
+
+.nav-btn:hover,
+.nav-btn.active{
+    color:var(--text);
+    background:var(--surface2);
+}
+
+.header-money{
+    display:flex;
+    gap:6px;
+    flex-shrink:0;
+}
+
+.money-pill{
+    padding:7px 9px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;
+    font-size:9px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:5px;
+    min-width:105px;
+}
+
+.money-pill svg{
+    width:17px;
+    height:17px;
+    flex-shrink:0;
+}
+
+.money-pill strong{
+    display:block;
+    font-size:12px;
+    white-space:nowrap;
+}
+
+.money-pill.cash strong{
+    color:var(--green);
+}
+
+.money-pill.bank strong{
+    color:var(--blue);
+}
+
+.money-pill.invest strong{
+    color:var(--orange);
+}
+
+main{
+    padding:0 10px;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+.hero{
+    background:linear-gradient(135deg,#312e81,#4f46e5);
+    border-radius:var(--radius);
+    padding:24px;
+    box-shadow:var(--shadow);
+    margin-bottom:20px;
+}
+
+.hero-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:15px;
+}
+
+.hero h1{
+    font-size:24px;
+    font-weight:800;
+    margin-bottom:6px;
+}
+
+.hero p{
+    color:#c7d2fe;
+    font-size:13px;
+}
+
+.player-badge{
+    background:rgba(255,255,255,.15);
+    padding:10px 14px;
+    border-radius:12px;
+    font-size:12px;
+    font-weight:600;
+    text-align:right;
+    border:1px solid rgba(255,255,255,.2);
+    white-space:nowrap;
+}
+
+.player-badge b{
+    display:block;
+    font-size:14px;
+    margin-top:2px;
+}
+
+.card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:18px;
+}
+
+.status-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    margin-bottom:20px;
+}
+
+.status-card{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.status-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    color:var(--muted);
+    font-size:12px;
+    font-weight:700;
+}
+
+.status-header svg{
+    width:18px;
+    height:18px;
+}
+
+.status-value{
+    font-size:20px;
+    font-weight:900;
+}
+
+.section-header{
+    margin-bottom:14px;
+}
+
+.section-title{
+    font-size:18px;
+    font-weight:800;
+}
+
+.section-sub{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:3px;
+}
+
+.action-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:12px;
+    margin-bottom:24px;
+}
+
+.action-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:14px;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:8px;
+    transition:.2s;
+    box-shadow:var(--shadow);
+    color:var(--text);
+    width:100%;
+    text-align:left;
+}
+
+.action-card:hover{
+    border-color:var(--primary);
+    transform:translateY(-2px);
+}
+
+.action-card:active{
+    transform:scale(.97);
+}
+
+.icon-box{
+    width:40px;
+    height:40px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--primary-light);
+    color:var(--primary);
+}
+
+.icon-box svg{
+    width:22px;
+    height:22px;
+}
+
+.action-card b{
+    font-size:13px;
+}
+
+.action-card span{
+    color:var(--muted);
+    font-size:11px;
+}
+
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px;
+}
+
+.progress{
+    height:10px;
+    background:var(--surface2);
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:10px;
+}
+
+.progress-fill{
+    height:100%;
+    width:0%;
+    border-radius:20px;
+    background:linear-gradient(90deg,var(--primary),#8b5cf6);
+    transition:width:.2s linear;
+}
+
+.btn{
+    padding:10px 16px;
+    border-radius:10px;
+    font-weight:700;
+    font-size:13px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    transition:.2s;
+    width:100%;
+}
+
+.btn svg{
+    width:17px;
+    height:17px;
+}
+
+.btn-sm{
+    padding:8px 12px;
+    font-size:12px;
+    border-radius:8px;
+    width:auto;
+}
+
+.btn-primary{
+    background:var(--primary);
+    color:white;
+}
+
+.btn-primary:hover{
+    background:var(--primary-hover);
+}
+
+.btn-light{
+    background:var(--surface2);
+    color:var(--text);
+}
+
+.btn-green{
+    background:var(--green);
+    color:white;
+}
+
+.btn-danger{
+    background:var(--red);
+    color:white;
+}
+
+.btn-orange{
+    background:var(--orange);
+    color:#111827;
+}
+
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    background:rgba(15,23,42,.85);
+    backdrop-filter:blur(6px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    background:var(--surface);
+    border:1px solid var(--border);
+    width:min(550px,100%);
+    max-height:85vh;
+    overflow-y:auto;
+    border-radius:var(--radius);
+    padding:20px;
+    box-shadow:0 25px 50px -12px rgba(0,0,0,.5);
+}
+
+.modal-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:16px;
+}
+
+.close-btn{
+    width:32px;
+    height:32px;
+    border-radius:8px;
+    background:var(--surface2);
+    color:var(--muted);
+    display:grid;
+    place-items:center;
+}
+
+.input{
+    width:100%;
+    padding:10px 14px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:var(--bg);
+    color:var(--text);
+    margin-top:6px;
+}
+
+.form-group{
+    margin-bottom:14px;
+}
+
+.form-group label{
+    font-size:11px;
+    font-weight:700;
+    color:var(--muted);
+}
+
+.notifications{
+    position:fixed;
+    top:80px;
+    right:20px;
+    z-index:200;
+    width:min(320px,calc(100% - 40px));
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    pointer-events:none;
+}
+
+.notification{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-left:4px solid var(--primary);
+    border-radius:12px;
+    padding:12px 14px;
+    box-shadow:var(--shadow);
+    animation:notificationIn .25s ease;
+}
+
+@keyframes notificationIn{
+    from{
+        opacity:0;
+        transform:translateX(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+
+.notification b{
+    display:block;
+    font-size:12px;
+    margin-bottom:2px;
+}
+
+.notification span{
+    font-size:11px;
+    color:var(--muted);
+}
+
+.bottom-nav{
+    display:none;
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    z-index:80;
+    height:65px;
+    background:rgba(15,23,42,.98);
+    backdrop-filter:blur(16px);
+    border-top:1px solid var(--border);
+    padding:0 5px;
+}
+
+.bottom-btn{
+    flex:1;
+    background:none;
+    color:var(--muted);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:3px;
+    font-size:9px;
+    font-weight:700;
+}
+
+.bottom-btn svg{
+    width:18px;
+    height:18px;
+}
+
+.bottom-btn.active{
+    color:var(--primary);
+}
+
+.category-tabs{
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    padding-bottom:10px;
+    margin-bottom:15px;
+}
+
+.cat-btn{
+    padding:8px 14px;
+    border-radius:20px;
+    background:var(--surface);
+    color:var(--muted);
+    font-size:12px;
+    font-weight:700;
+    white-space:nowrap;
+    border:1px solid var(--border);
+}
+
+.cat-btn.active{
+    background:var(--primary);
+    color:white;
+    border-color:var(--primary);
+}
+
+.invest-portfolio-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    padding:12px 0;
+    border-bottom:1px solid var(--border);
+}
+
+.invest-portfolio-item:last-child{
+    border-bottom:0;
+}
+
+.wallet-box{
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:15px;
+    background:rgba(6,182,212,.06);
+    margin-top:12px;
+}
+
+.wallet-title{
+    color:var(--muted);
+    font-size:11px;
+    font-weight:700;
+}
+
+.wallet-value{
+    font-size:25px;
+    font-weight:900;
+    color:var(--orange);
+    margin-top:4px;
+}
+
+.active-event-card{
+    background:var(--surface);
+    border:2px solid var(--orange);
+    border-radius:var(--radius);
+    padding:18px;
+    margin-bottom:20px;
+    box-shadow:var(--shadow);
+}
+
+.study-progress{
+    margin-top:12px;
+}
+
+.lesson-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    background:var(--primary-light);
+    color:#c7d2fe;
+    padding:5px 8px;
+    border-radius:8px;
+    font-size:10px;
+    font-weight:800;
+}
+
+.rep-badge{
+    color:var(--orange);
+    font-weight:800;
+}
+
+@media(max-width:1150px){
+
+    .desktop-nav{
+        display:none;
+    }
+
+    .bottom-nav{
+        display:flex;
+    }
+
+    body{
+        padding-bottom:80px;
+    }
+
+    .status-grid{
+        grid-template-columns:repeat(4,1fr);
+    }
+
+    .action-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+}
+
+@media(max-width:700px){
+
+    .app{
+        padding:0 5px;
+    }
+
+    main{
+        padding:0 5px;
+    }
+
+    .header-inner{
+        min-height:62px;
+        padding:7px 5px;
+        gap:6px;
+    }
+
+    .logo{
+        font-size:14px;
+    }
+
+    .logo svg{
+        width:18px;
+        height:18px;
+    }
+
+    .header-money{
+        gap:3px;
+    }
+
+    .money-pill{
+        min-width:0;
+        padding:6px;
+    }
+
+    .money-pill strong{
+        font-size:10px;
+    }
+
+    .money-pill svg{
+        width:15px;
+        height:15px;
+    }
+
+    .hero{
+        padding:18px;
+    }
+
+    .hero h1{
+        font-size:20px;
+    }
+
+    .hero-top{
+        flex-direction:column;
+    }
+
+    .player-badge{
+        text-align:left;
+        width:100%;
+        white-space:normal;
+    }
+
+    .status-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .action-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .info-grid{
+        grid-template-columns:1fr;
+    }
+
+    .card{
+        padding:15px;
+    }
+
+    .notifications{
+        top:70px;
+        right:10px;
+        width:calc(100% - 20px);
+    }
+}
+
+@media(max-width:430px){
+
+    .logo span{
+        display:none;
+    }
+
+    .money-pill{
+        padding:5px;
+    }
+
+    .money-pill strong{
+        font-size:9px;
+    }
+
+    .bottom-btn{
+        font-size:8px;
+    }
+}
+</style></head><body><div class="app"><header>
+<div class="header-inner"><div class="logo">
+    <i data-lucide="crown"></i>
+    Vida <span>& Império</span>
+</div><nav class="desktop-nav"><button class="nav-btn active" onclick="showPage('inicio')">
+    <i data-lucide="home"></i> Início
+</button><button class="nav-btn" onclick="showPage('trabalho')">
+    <i data-lucide="briefcase"></i> Trabalho
+</button><button class="nav-btn" onclick="showPage('estudos')">
+    <i data-lucide="graduation-cap"></i> Estudos
+</button><button class="nav-btn" onclick="showPage('investimentos')">
+    <i data-lucide="trending-up"></i> Investimentos
+</button><button class="nav-btn" onclick="showPage('banco')">
+    <i data-lucide="landmark"></i> Banco
+</button><button class="nav-btn" onclick="showPage('perfil')">
+    <i data-lucide="user"></i> Perfil
+</button></nav><div class="header-money"><div class="money-pill cash">
+    <i data-lucide="banknote" style="color:var(--green)"></i>
+    <div>
+        <strong id="headerCash">R$ 200,00</strong>
+    </div>
+</div><div class="money-pill bank">
+    <i data-lucide="credit-card" style="color:var(--blue)"></i>
+    <div>
+        <strong id="headerBank">R$ 0,00</strong>
+    </div>
+</div><div class="money-pill invest">
+    <i data-lucide="wallet" style="color:var(--orange)"></i>
+    <div>
+        <strong id="headerInvestment">R$ 0,00</strong>
+    </div>
+</div></div>
+</div>
+</header><main><!-- INÍCIO --><section id="inicio" class="page active"><div class="hero"><div class="hero-top"><div>
+<h1 id="welcomeTitle">Sua Jornada Começa</h1>
+<p>Gerencie seus recursos, trabalhe, estude e construa seu império.</p>
+</div><div class="player-badge">
+Status do Jogador
+<b id="heroInfo">Nível 1 • Dia 1 • 08:00:00</b>
+</div></div>
+</div><div id="homeEventCard" style="display:none;" class="active-event-card"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;"><div><span style="font-size:11px;font-weight:800;color:var(--orange);text-transform:uppercase;">
+Condição Especial Ativa
+</span><h3 id="activeEventTitle" style="font-size:16px;margin-top:2px;">
+Evento Ativo
+</h3><p id="activeEventDesc" style="font-size:12px;color:var(--muted);margin-top:4px;"></p></div><i data-lucide="alert-triangle"
+style="color:var(--orange);width:32px;height:32px;">
+</i>
+
+</div>
+</div><div class="status-grid"><div class="card status-card">
+<div class="status-header">
+Energia
+<i data-lucide="zap" style="color:var(--orange)"></i>
+</div>
+<div class="status-value" id="energy">100%</div>
+</div><div class="card status-card">
+<div class="status-header">
+Saúde
+<i data-lucide="heart" style="color:var(--red)"></i>
+</div>
+<div class="status-value" id="health">100%</div>
+</div><div class="card status-card">
+<div class="status-header">
+Inteligência
+<i data-lucide="brain" style="color:var(--blue)"></i>
+</div>
+<div class="status-value" id="intelligence">10</div>
+</div><div class="card status-card">
+<div class="status-header">
+Experiência
+<i data-lucide="star" style="color:var(--primary)"></i>
+</div>
+<div class="status-value" id="xp">0 XP</div>
+</div></div><div class="section-header"><div class="section-title">Ações Rápidas</div><div class="section-sub">
+O tempo passa em tempo real: 1 segundo real = 1 segundo no jogo.
+</div></div><div class="action-grid"><button class="action-card" onclick="startAction('descansar')">
+<div class="icon-box"><i data-lucide="coffee"></i></div>
+<b>Descansar</b>
+<span>+25% Energia • +1 Rep.</span>
+</button><button class="action-card" onclick="startAction('dormir')">
+<div class="icon-box"><i data-lucide="moon"></i></div>
+<b>Dormir</b>
+<span>Recupera energia e saúde</span>
+</button><button class="action-card" onclick="startAction('estudar')">
+<div class="icon-box"><i data-lucide="book-open"></i></div>
+<b>Estudar</b>
+<span>+2 Inteligência • +XP</span>
+</button><button class="action-card" onclick="startAction('exercitar')">
+<div class="icon-box"><i data-lucide="activity"></i></div>
+<b>Exercitar</b>
+<span>+5% Saúde • +1 Rep.</span>
+</button><button class="action-card" onclick="startAction('lazer')">
+<div class="icon-box"><i data-lucide="gamepad-2"></i></div>
+<b>Lazer</b>
+<span>+10% Energia</span>
+</button></div><div class="info-grid"><div class="card"><div class="section-title" style="margin-bottom:12px;">
+Evolução do Personagem
+</div><div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;">
+<span>Nível <span id="level">1</span></span>
+<span id="reputation">Reputação: 0</span>
+</div><div class="progress">
+<div class="progress-fill" id="xpBar"></div>
+</div><div style="margin-top:8px;font-size:12px;color:var(--muted);text-align:right;" id="xpText">
+0 / 150 XP
+</div></div><div class="card"><div class="section-title" style="margin-bottom:8px;">
+Situação Atual
+</div><p style="font-size:13px;color:var(--muted);">
+Emprego:
+<b id="homeJob" style="color:var(--text);">Desempregado</b>
+</p><p style="font-size:13px;color:var(--muted);margin-top:4px;">
+Dia: <b id="day" style="color:var(--text);">1</b>
+|
+Hora: <b id="time" style="color:var(--text);">08:00:00</b>
+</p><button class="btn btn-primary" style="margin-top:14px;" onclick="showPage('trabalho')">
+<i data-lucide="search"></i>
+Buscar Oportunidades
+</button></div></div></section><!-- TRABALHO --><section id="trabalho" class="page"><div class="section-header">
+<div class="section-title">Mercado de Trabalho</div>
+<div class="section-sub">Escolha uma vaga e faça a entrevista.</div>
+</div><div class="card" style="margin-bottom:20px;"><h3>Emprego Atual</h3><p id="currentJobText" style="margin:8px 0;color:var(--muted);">
+Você não possui um emprego formal no momento.
+</p><button id="workBtn"
+class="btn btn-green"
+style="display:none;"
+onclick="startAction('trabalhar')">
+
+<i data-lucide="briefcase"></i>
+Cumprir Expediente
+
+</button></div><div class="category-tabs"><button class="cat-btn active" onclick="filterJobs('todos',this)">
+Todos
+</button><button class="cat-btn" onclick="filterJobs('temporario',this)">
+Temporários
+</button><button class="cat-btn" onclick="filterJobs('meio',this)">
+Meio Período
+</button><button class="cat-btn" onclick="filterJobs('efetivo',this)">
+Efetivos
+</button><button class="cat-btn" onclick="filterJobs('diploma',this)">
+Superior
+</button></div><div class="info-grid" id="jobsList"></div></section><!-- ESTUDOS --><section id="estudos" class="page"><div class="section-header"><div class="section-title">
+Centro Educacional
+</div><div class="section-sub">
+Cursos e capacitações. Para concluir um curso é necessário assistir a todas as aulas.
+</div></div><div class="category-tabs"><button class="cat-btn active" onclick="filterStudies('todos',this)">
+Todos
+</button><button class="cat-btn" onclick="filterStudies('basico',this)">
+Básicos
+</button><button class="cat-btn" onclick="filterStudies('tecnico',this)">
+Técnicos
+</button><button class="cat-btn" onclick="filterStudies('graduacao',this)">
+Graduações
+</button></div><div class="info-grid" id="studiesList"></div></section><!-- INVESTIMENTOS --><section id="investimentos" class="page"><div class="section-header"><div class="section-title">
+Mercado Financeiro
+</div><div class="section-sub">
+Invista usando sua Carteira de Investimentos e receba dividendos nela.
+</div></div><div class="card" style="margin-bottom:20px;"><div style="font-size:12px;color:var(--muted);">
+Carteira de Investimentos
+</div><div id="investmentWalletBig"
+style="font-size:30px;font-weight:900;color:var(--orange);margin:5px 0;">
+R$ 0,00
+</div><p style="font-size:12px;color:var(--muted);">
+Os dividendos dos investimentos são depositados automaticamente aqui no início de cada novo dia.
+</p><div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;"><button class="btn btn-primary btn-sm" onclick="transferToInvestment()">
+<i data-lucide="arrow-down-to-line"></i>
+Banco → Carteira
+</button><button class="btn btn-light btn-sm" onclick="transferFromInvestment()">
+<i data-lucide="arrow-up-from-line"></i>
+Carteira → Banco
+</button></div></div><div class="category-tabs"><button class="cat-btn active" onclick="filterInvestments('todos',this)">
+Todos
+</button><button class="cat-btn" onclick="filterInvestments('baixo',this)">
+Baixo Risco
+</button><button class="cat-btn" onclick="filterInvestments('medio',this)">
+Médio Risco
+</button><button class="cat-btn" onclick="filterInvestments('alto',this)">
+Alto Risco
+</button></div><div class="info-grid" id="investGrid"></div></section><!-- BANCO --><section id="banco" class="page"><div class="section-header"><div class="section-title">
+Sistema Bancário
+</div><div class="section-sub">
+Depósitos, saques e empréstimos.
+</div></div><div class="card" style="margin-bottom:20px;"><div style="color:var(--muted);font-size:12px;">
+Saldo em Conta Corrente
+</div><div style="font-size:28px;font-weight:900;color:var(--blue);margin:6px 0;"
+id="bankBalance">
+R$ 0,00
+</div><div style="display:flex;gap:10px;margin-top:14px;"><button class="btn btn-primary" onclick="depositPrompt()">
+Depositar
+</button><button class="btn btn-light" onclick="withdrawPrompt()">
+Sacar
+</button></div></div><div class="card" style="margin-bottom:20px;"><h3>Carteira de Investimentos</h3><div class="wallet-box"><div class="wallet-title">
+SALDO DISPONÍVEL PARA INVESTIR
+</div><div class="wallet-value" id="bankInvestmentWallet">
+R$ 0,00
+</div></div><div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;"><button class="btn btn-primary btn-sm" onclick="transferToInvestment()">
+Transferir para Carteira
+</button><button class="btn btn-light btn-sm" onclick="transferFromInvestment()">
+Retirar da Carteira
+</button></div><div id="bankPortfolioList" style="margin-top:15px;"></div></div><div class="card"><h3>Empréstimo Bancário</h3><p style="font-size:12px;color:var(--muted);margin:8px 0;">
+Taxa diária: 2%.
+</p><p style="font-size:13px;font-weight:800;margin-bottom:10px;" id="loanStatus">
+Devendo: R$ 0,00
+</p><div style="display:flex;gap:8px;"><button class="btn btn-primary" onclick="takeLoan()">
+Pegar R$ 500
+</button><button class="btn btn-green" onclick="payLoan()">
+Pagar
+</button></div></div></section><!-- PERFIL --><section id="perfil" class="page"><div class="section-header"><div class="section-title">
+Perfil do Jogador
+</div><div class="section-sub">
+Dados e estatísticas.
+</div></div><div class="info-grid" style="margin-bottom:20px;"><div class="card"><div class="form-group"><label>NOME DO PERSONAGEM</label>
+
+<input
+class="input"
+id="profileName"
+placeholder="Seu nome..."
+maxlength="30">
+
+</div><button class="btn btn-primary" onclick="saveProfile()">
+Salvar Nome
+</button></div><div class="card"><h3>Estatísticas</h3><p
+style="font-size:12px;color:var(--muted);margin-top:8px;line-height:1.8;"
+id="profileStats">
+</p></div></div><div class="card"><button class="btn btn-danger" onclick="resetGame()">
+Reiniciar Todo o Progresso
+</button></div></section></main>
+</div><!-- BOTTOM NAV --><nav class="bottom-nav"><button class="bottom-btn active" onclick="showPage('inicio')">
+<i data-lucide="home"></i>
+Início
+</button><button class="bottom-btn" onclick="showPage('trabalho')">
+<i data-lucide="briefcase"></i>
+Trabalho
+</button><button class="bottom-btn" onclick="showPage('estudos')">
+<i data-lucide="graduation-cap"></i>
+Estudos
+</button><button class="bottom-btn" onclick="showPage('investimentos')">
+<i data-lucide="trending-up"></i>
+Investir
+</button><button class="bottom-btn" onclick="showPage('banco')">
+<i data-lucide="landmark"></i>
+Banco
+</button><button class="bottom-btn" onclick="showPage('perfil')">
+<i data-lucide="user"></i>
+Perfil
+</button></nav><!-- MODAL AÇÃO --><div class="modal" id="actionModal"><div class="modal-box" style="text-align:center;"><h3 id="actionTitle">
+Realizando Ação...
+</h3><div class="progress" style="height:10px;margin-top:15px;">
+<div class="progress-fill" id="actionProgress"></div>
+</div><div
+id="actionPercent"
+style="font-weight:900;margin-top:10px;font-size:16px;">
+0%
+</div></div>
+</div><!-- MODAL ENTREVISTA --><div class="modal" id="interviewModal"><div class="modal-box"><div class="modal-head"><h3 id="interviewTitle">
+Entrevista de Emprego
+</h3><button class="close-btn" onclick="closeModal('interviewModal')">
+<i data-lucide="x"></i>
+</button></div><div id="interviewContent"></div></div>
+</div><!-- MODAL EVENTO --><div class="modal" id="eventModal"><div class="modal-box"><div class="modal-head"><h3 id="eventModalTitle" style="color:var(--orange);">
+⚠️ Evento Inesperado
+</h3></div><p
+id="eventModalDesc"
+style="font-size:14px;margin-bottom:15px;line-height:1.5;">
+</p><div id="eventChoices"
+style="display:flex;flex-direction:column;gap:8px;">
+</div></div>
+</div><div class="notifications" id="notifications"></div><script>
+
+/* =========================================================
+CONFIGURAÇÃO
+========================================================= */
+
+const STORAGE_KEY = "vidaImperio_realtime_v15";
+
+/* =========================================================
+ESTADO PADRÃO
+========================================================= */
+
+const DEFAULT_GAME = {
+
+    name:"Jogador",
+
+    profession:"Desempregado",
+
+    cash:200,
+
+    bank:0,
+
+    investmentWallet:0,
+
+    day:1,
+
+    secondsOfDay:8*60*60,
+
+    lastRealTimestamp:Date.now(),
+
+    energy:100,
+
+    health:100,
+
+    intelligence:10,
+
+    level:1,
+
+    xp:0,
+
+    reputation:0,
+
+    job:null,
+
+    loan:0,
+
+    portfolio:{},
+
+    degrees:[],
+
+    completedStudies:[],
+
+    studyProgress:{},
+
+    stats:{
+        actionsCompleted:0,
+        totalEarned:0,
+        eventsEncountered:0,
+        totalDividends:0,
+        reputationEarned:0,
+        lessonsCompleted:0,
+        studiesCompleted:0,
+        workDays:0
+    }
+};
+
+let game = JSON.parse(JSON.stringify(DEFAULT_GAME));
+
+let filterJobCat="todos";
+let filterStudyCat="todos";
+let filterInvestCat="todos";
+
+let isPerformingAction=false;
+let gameLoop=null;
+let lastEventDay=0;
+
+
+/* =========================================================
+EMPREGOS
+========================================================= */
+
+const JOBS=[
+
+{
+id:"j1",
+cat:"temporario",
+energyCost:15,
+name:"Panfletista",
+salary:30,
+durationMs:2500,
+reqIntel:5,
+reqRep:0,
+xp:3,
+rep:2,
+interview:{
+q:"Como lida com a rejeição ao entregar panfletos?",
+a:[
+"Continuo sorrindo e oferecendo",
+"Reclamo com as pessoas"
+],
+c:0
+}
+},
+
+{
+id:"j2",
+cat:"temporario",
+energyCost:20,
+name:"Limpador de Vidros",
+salary:45,
+durationMs:3000,
+reqIntel:8,
+reqRep:0,
+xp:4,
+rep:2,
+interview:{
+q:"Qual seu foco ao trabalhar em locais altos?",
+a:[
+"Segurança total e atenção aos detalhes",
+"Terminar o mais rápido possível"
+],
+c:0
+}
+},
+
+{
+id:"j3",
+cat:"temporario",
+energyCost:25,
+name:"Ajudante de Carga",
+salary:60,
+durationMs:3500,
+reqIntel:10,
+reqRep:0,
+xp:5,
+rep:3,
+interview:{
+q:"Como posiciona caixas mais leves?",
+a:[
+"Em cima das caixas pesadas",
+"Abaixo de tudo"
+],
+c:0
+}
+},
+
+{
+id:"j6",
+cat:"meio",
+energyCost:30,
+name:"Atendente de Lanchonete",
+salary:90,
+durationMs:4000,
+reqIntel:20,
+reqRep:10,
+xp:9,
+rep:4,
+interview:{
+q:"Como tratar um cliente irritado?",
+a:[
+"Manter a calma e resolver o problema",
+"Gritar de volta"
+],
+c:0
+}
+},
+
+{
+id:"j7",
+cat:"meio",
+energyCost:35,
+name:"Caixa de Mercado",
+salary:110,
+durationMs:4500,
+reqIntel:25,
+reqRep:15,
+xp:12,
+rep:5,
+interview:{
+q:"O que fazer ao perceber um troco divergente?",
+a:[
+"Conferir o caixa imediatamente",
+"Deixar passar"
+],
+c:0
+}
+},
+
+{
+id:"j11",
+cat:"efetivo",
+energyCost:45,
+name:"Auxiliar Administrativo",
+salary:200,
+durationMs:5000,
+reqIntel:40,
+reqRep:30,
+xp:20,
+rep:7,
+interview:{
+q:"Como organiza suas tarefas diárias?",
+a:[
+"Por prioridade de prazo",
+"Faço o que der na telha"
+],
+c:0
+}
+},
+
+{
+id:"j12",
+cat:"efetivo",
+energyCost:50,
+name:"Gerente de Vendas",
+salary:350,
+durationMs:6000,
+reqIntel:60,
+reqRep:50,
+xp:30,
+rep:10,
+interview:{
+q:"Como motivar a equipe de vendas?",
+a:[
+"Definindo metas e apoiando a equipe",
+"Com ameaças de demissão"
+],
+c:0
+}
+},
+
+{
+id:"j16",
+cat:"diploma",
+energyCost:60,
+name:"Desenvolvedor de Software",
+salary:600,
+durationMs:7000,
+reqIntel:80,
+reqRep:70,
+reqDegree:"Ciência da Computação",
+xp:50,
+rep:15,
+interview:{
+q:"Qual deve ser uma prioridade no desenvolvimento?",
+a:[
+"Legibilidade e segurança",
+"Código bagunçado porém rápido"
+],
+c:0
+}
+},
+
+{
+id:"j17",
+cat:"diploma",
+energyCost:65,
+name:"Advogado Corporativo",
+salary:850,
+durationMs:8000,
+reqIntel:90,
+reqRep:85,
+reqDegree:"Direito",
+xp:70,
+rep:20,
+interview:{
+q:"Como reduzir riscos trabalhistas?",
+a:[
+"Seguindo rigorosamente as leis",
+"Ignorando os direitos"
+],
+c:0
+}
+}
+
+];
+
+
+/* =========================================================
+ESTUDOS
+========================================================= */
+
+const STUDIES=[
+
+{
+id:"s1",
+cat:"basico",
+name:"Curso de Informática Básica",
+cost:100,
+intelBonus:8,
+degree:null,
+lessons:5,
+lessonXP:5,
+lessonEnergy:5,
+completionRep:5
+},
+
+{
+id:"s2",
+cat:"basico",
+name:"Atendimento ao Cliente",
+cost:150,
+intelBonus:10,
+degree:null,
+lessons:6,
+lessonXP:6,
+lessonEnergy:5,
+completionRep:6
+},
+
+{
+id:"s3",
+cat:"tecnico",
+name:"Técnico em Administração",
+cost:500,
+intelBonus:20,
+degree:null,
+lessons:10,
+lessonXP:8,
+lessonEnergy:7,
+completionRep:10
+},
+
+{
+id:"s4",
+cat:"tecnico",
+name:"Técnico em Programação",
+cost:800,
+intelBonus:30,
+degree:null,
+lessons:12,
+lessonXP:9,
+lessonEnergy:8,
+completionRep:12
+},
+
+{
+id:"s5",
+cat:"graduacao",
+name:"Ciência da Computação",
+cost:3000,
+intelBonus:50,
+degree:"Ciência da Computação",
+lessons:20,
+lessonXP:12,
+lessonEnergy:10,
+completionRep:20
+},
+
+{
+id:"s6",
+cat:"graduacao",
+name:"Direito",
+cost:4000,
+intelBonus:60,
+degree:"Direito",
+lessons:24,
+lessonXP:13,
+lessonEnergy:10,
+completionRep:25
+}
+
+];
+
+
+/* =========================================================
+INVESTIMENTOS
+========================================================= */
+
+const INVESTMENTS=[
+
+{
+id:"inv1",
+cat:"baixo",
+name:"Poupança Integrada",
+min:50,
+dailyReturn:.005
+},
+
+{
+id:"inv2",
+cat:"baixo",
+name:"Tesouro Direto Simulado",
+min:100,
+dailyReturn:.012
+},
+
+{
+id:"inv3",
+cat:"medio",
+name:"Fundo Imobiliário (FII)",
+min:200,
+dailyReturn:.025
+},
+
+{
+id:"inv4",
+cat:"alto",
+name:"Ações de Tecnologia",
+min:500,
+dailyReturn:.050
+}
+
+];
+
+
+/* =========================================================
+EVENTOS
+========================================================= */
+
+const RANDOM_EVENTS=[
+
+{
+id:"e1",
+title:"Oportunidade de Freelance",
+desc:"Um amigo precisa de ajuda rápida para entregar um serviço hoje.",
+choices:[
+
+{
+text:"Aceitar (-20% Energia, +R$ 100, +3 Reputação)",
+action:g=>{
+
+g.energy=Math.max(0,g.energy-20);
+g.cash+=100;
+g.stats.totalEarned+=100;
+addReputation(3);
+
+return "Você ganhou R$ 100 e aumentou sua reputação.";
+
+}
+},
+
+{
+text:"Recusar",
+action:()=>{
+return "Você decidiu ignorar a oportunidade.";
+}
+}
+
+]
+},
+
+{
+id:"e2",
+title:"Pneu Furado",
+desc:"Seu transporte estragou no meio do caminho.",
+choices:[
+
+{
+text:"Pagar conserto (-R$ 40)",
+action:g=>{
+
+if(g.cash<40){
+return "Você não possui dinheiro suficiente.";
+}
+
+g.cash-=40;
+
+return "Você pagou R$ 40 pelo conserto.";
+
+}
+},
+
+{
+text:"Empurrar a pé (-30% Energia)",
+action:g=>{
+
+g.energy=Math.max(0,g.energy-30);
+
+return "Você chegou cansado.";
+
+}
+}
+
+]
+},
+
+{
+id:"e3",
+title:"Encontrou Dinheiro!",
+desc:"Você achou dinheiro perdido no chão.",
+choices:[
+
+{
+text:"Guardar (+R$ 50)",
+action:g=>{
+
+g.cash+=50;
+g.stats.totalEarned+=50;
+
+return "Sorte! Você encontrou R$ 50.";
+
+}
+},
+
+{
+text:"Deixar no local (+2 Reputação)",
+action:g=>{
+
+addReputation(2);
+
+return "Você fez a coisa certa e ganhou reputação.";
+
+}
+}
+
+]
+}
+
+];
+
+
+/* =========================================================
+UTILITÁRIOS
+========================================================= */
+
+function money(value){
+
+value=Number(value)||0;
+
+return new Intl.NumberFormat("pt-BR",{
+style:"currency",
+currency:"BRL"
+}).format(value);
+
+}
+
+function clamp(value,min,max){
+
+return Math.max(
+min,
+Math.min(max,value)
+);
+
+}
+
+function setText(id,text){
+
+const el=document.getElementById(id);
+
+if(el){
+el.textContent=text;
+}
+
+}
+
+
+/* =========================================================
+ÍCONES
+========================================================= */
+
+function refreshIcons(){
+
+if(
+window.lucide &&
+typeof lucide.createIcons==="function"
+){
+
+lucide.createIcons();
+
+}
+
+}
+
+
+/* =========================================================
+REPUTAÇÃO
+========================================================= */
+
+function addReputation(value){
+
+value=Math.floor(Number(value)||0);
+
+if(value<=0){
+return;
+}
+
+game.reputation+=value;
+
+game.stats.reputationEarned+=value;
+
+}
+
+
+/* =========================================================
+SALVAMENTO
+========================================================= */
+
+function saveGame(){
+
+try{
+
+localStorage.setItem(
+STORAGE_KEY,
+JSON.stringify(game)
+);
+
+}catch(error){
+
+console.error(
+"Erro ao salvar jogo:",
+error
+);
+
+}
+
+}
+
+
+/* =========================================================
+CARREGAMENTO
+========================================================= */
+
+function loadGame(){
+
+try{
+
+let data=localStorage.getItem(STORAGE_KEY);
+
+if(!data){
+
+data=localStorage.getItem(
+"vidaImperio_realtime_final_v14"
+);
+
+}
+
+if(!data){
+
+data=localStorage.getItem(
+"vidaImperio_v13_realtime"
+);
+
+}
+
+if(data){
+
+const saved=JSON.parse(data);
+
+game={
+...JSON.parse(JSON.stringify(DEFAULT_GAME)),
+...saved
+};
+
+game.portfolio=
+saved.portfolio &&
+typeof saved.portfolio==="object"
+?saved.portfolio:{};
+
+game.degrees=
+Array.isArray(saved.degrees)
+?saved.degrees:[];
+
+game.completedStudies=
+Array.isArray(saved.completedStudies)
+?saved.completedStudies:[];
+
+game.studyProgress=
+saved.studyProgress &&
+typeof saved.studyProgress==="object"
+?saved.studyProgress:{};
+
+game.stats={
+...DEFAULT_GAME.stats,
+...(saved.stats||{})
+};
+
+}
+
+}catch(error){
+
+console.error(
+"Erro ao carregar jogo:",
+error
+);
+
+game=JSON.parse(
+JSON.stringify(DEFAULT_GAME)
+);
+
+}
+
+}
+
+
+/* =========================================================
+NORMALIZAÇÃO
+========================================================= */
+
+function normalizeGame(){
+
+game.cash=Math.max(
+0,
+Number(game.cash)||0
+);
+
+game.bank=Math.max(
+0,
+Number(game.bank)||0
+);
+
+game.investmentWallet=Math.max(
+0,
+Number(game.investmentWallet)||0
+);
+
+game.day=Math.max(
+1,
+Number(game.day)||1
+);
+
+game.secondsOfDay=Number(
+game.secondsOfDay
+);
+
+if(
+!Number.isFinite(game.secondsOfDay) ||
+game.secondsOfDay<0 ||
+game.secondsOfDay>=86400
+){
+
+game.secondsOfDay=8*60*60;
+
+}
+
+game.lastRealTimestamp=
+Number(game.lastRealTimestamp)||Date.now();
+
+game.energy=clamp(
+Number(game.energy)||0,
+0,
+100
+);
+
+game.health=clamp(
+Number(game.health)||0,
+0,
+100
+);
+
+game.intelligence=Math.max(
+0,
+Number(game.intelligence)||0
+);
+
+game.level=Math.max(
+1,
+Number(game.level)||1
+);
+
+game.xp=Math.max(
+0,
+Number(game.xp)||0
+);
+
+game.reputation=Math.max(
+0,
+Number(game.reputation)||0
+);
+
+game.loan=Math.max(
+0,
+Number(game.loan)||0
+);
+
+if(!game.portfolio){
+game.portfolio={};
+}
+
+if(!game.studyProgress){
+game.studyProgress={};
+}
+
+if(!game.stats){
+
+game.stats={
+...DEFAULT_GAME.stats
+};
+
+}else{
+
+game.stats={
+...DEFAULT_GAME.stats,
+...game.stats
+};
+
+}
+
+}
+
+
+/* =========================================================
+RELÓGIO
+========================================================= */
+
+function startRealTimeClock(){
+
+if(gameLoop){
+clearInterval(gameLoop);
+}
+
+game.lastRealTimestamp=Number(
+game.lastRealTimestamp
+)||Date.now();
+
+gameLoop=setInterval(()=>{
+
+const now=Date.now();
+
+let elapsed=Math.floor(
+(now-game.lastRealTimestamp)/1000
+);
+
+if(elapsed<=0){
+
+updateHeaderUI();
+return;
+
+}
+
+elapsed=Math.min(
+elapsed,
+86400*30
+);
+
+game.lastRealTimestamp=now;
+
+advanceRealTime(elapsed);
+
+updateHeaderUI();
+
+saveGame();
+
+},1000);
+
+}
+
+
+/* =========================================================
+AVANÇAR TEMPO
+========================================================= */
+
+function advanceRealTime(seconds){
+
+seconds=Math.max(
+0,
+Math.floor(seconds)
+);
+
+while(seconds>0){
+
+const remainingDay=
+86400-game.secondsOfDay;
+
+const step=Math.min(
+seconds,
+remainingDay
+);
+
+game.secondsOfDay+=step;
+
+seconds-=step;
+
+if(game.secondsOfDay>=86400){
+
+game.secondsOfDay=0;
+
+game.day++;
+
+onNewDay();
+
+}
+
+}
+
+}
+
+
+/* =========================================================
+NOVO DIA
+========================================================= */
+
+function onNewDay(){
+
+processDailyDividends();
+
+processLoanInterest();
+
+game.health=clamp(
+game.health+2,
+0,
+100
+);
+
+game.energy=clamp(
+game.energy+10,
+0,
+100
+);
+
+saveGame();
+
+}
+
+
+/* =========================================================
+TEMPO OFFLINE
+========================================================= */
+
+function processOfflineTime(){
+
+const now=Date.now();
+
+let elapsed=Math.floor(
+(now-game.lastRealTimestamp)/1000
+);
+
+if(elapsed<=0){
+
+game.lastRealTimestamp=now;
+
+return;
+
+}
+
+elapsed=Math.min(
+elapsed,
+86400*30
+);
+
+advanceRealTime(elapsed);
+
+game.lastRealTimestamp=now;
+
+}
+
+
+/* =========================================================
+DIVIDENDOS
+========================================================= */
+
+function processDailyDividends(){
+
+let total=0;
+
+Object.keys(game.portfolio).forEach(id=>{
+
+const amount=
+Number(game.portfolio[id])||0;
+
+const inv=INVESTMENTS.find(
+i=>i.id===id
+);
+
+if(
+!inv ||
+amount<=0
+){
+
+return;
+
+}
+
+const dividend=
+amount*inv.dailyReturn;
+
+total+=dividend;
+
+});
+
+if(total>0){
+
+game.investmentWallet+=total;
+
+game.stats.totalDividends+=total;
+
+notify(
+"Dividendos Recebidos",
+`${money(total)} foi depositado na Carteira de Investimentos.`
+);
+
+}
+
+}
+
+
+/* =========================================================
+JUROS
+========================================================= */
+
+function processLoanInterest(){
+
+if(game.loan<=0){
+return;
+}
+
+game.loan=
+game.loan*1.02;
+
+notify(
+"Juros do Empréstimo",
+"Sua dívida recebeu juros diários de 2%."
+);
+
+}
+
+
+/* =========================================================
+FORMATAÇÃO DO RELÓGIO
+========================================================= */
+
+function getGameTime(){
+
+const hours=Math.floor(
+game.secondsOfDay/3600
+)
+.toString()
+.padStart(2,"0");
+
+const minutes=Math.floor(
+(game.secondsOfDay%3600)/60
+)
+.toString()
+.padStart(2,"0");
+
+const seconds=Math.floor(
+game.secondsOfDay%60
+)
+.toString()
+.padStart(2,"0");
+
+return `${hours}:${minutes}:${seconds}`;
+
+}
+
+
+/* =========================================================
+HEADER
+========================================================= */
+
+function updateHeaderUI(){
+
+setText(
+"headerCash",
+money(game.cash)
+);
+
+setText(
+"headerBank",
+money(game.bank)
+);
+
+setText(
+"headerInvestment",
+money(game.investmentWallet)
+);
+
+const time=getGameTime();
+
+setText(
+"heroInfo",
+`Nível ${game.level} • Dia ${game.day} • ${time}`
+);
+
+setText(
+"time",
+time
+);
+
+setText(
+"day",
+game.day
+);
+
+}
+
+
+/* =========================================================
+RENDER PRINCIPAL
+========================================================= */
+
+function renderAll(){
+
+setText(
+"energy",
+`${Math.round(game.energy)}%`
+);
+
+setText(
+"health",
+`${Math.round(game.health)}%`
+);
+
+setText(
+"intelligence",
+Math.floor(game.intelligence)
+);
+
+setText(
+"xp",
+`${Math.floor(game.xp)} XP`
+);
+
+setText(
+"level",
+game.level
+);
+
+setText(
+"reputation",
+`Reputação: ${game.reputation}`
+);
+
+const maxXP=
+game.level*150;
+
+const pct=Math.min(
+100,
+(game.xp/maxXP)*100
+);
+
+const xpBar=
+document.getElementById("xpBar");
+
+if(xpBar){
+
+xpBar.style.width=
+`${pct}%`;
+
+}
+
+setText(
+"xpText",
+`${Math.floor(game.xp)} / ${maxXP} XP`
+);
+
+const jobText=
+game.job
+?game.job.name
+:"Desempregado";
+
+setText(
+"homeJob",
+jobText
+);
+
+setText(
+"currentJobText",
+game.job
+?`Trabalhando como ${game.job.name} — salário de ${money(game.job.salary)} por expediente.`
+:"Você não possui um emprego formal no momento."
+);
+
+const workBtn=
+document.getElementById("workBtn");
+
+if(workBtn){
+
+workBtn.style.display=
+game.job
+?"inline-flex"
+:"none";
+
+}
+
+setText(
+"bankBalance",
+money(game.bank)
+);
+
+setText(
+"loanStatus",
+`Devendo: ${money(game.loan)}`
+);
+
+setText(
+"investmentWalletBig",
+money(game.investmentWallet)
+);
+
+setText(
+"bankInvestmentWallet",
+money(game.investmentWallet)
+);
+
+const profileName=
+document.getElementById("profileName");
+
+if(profileName){
+
+profileName.value=
+game.name;
+
+}
+
+setText(
+"profileStats",
+`Ações: ${game.stats.actionsCompleted}
+<br>Ganhos: ${money(game.stats.totalEarned)}
+<br>Dividendos: ${money(game.stats.totalDividends)}
+<br>Eventos: ${game.stats.eventsEncountered}
+<br>Aulas concluídas: ${game.stats.lessonsCompleted}
+<br>Cursos concluídos: ${game.stats.studiesCompleted}
+<br>Reputação conquistada: ${game.stats.reputationEarned}
+<br>Dias trabalhados: ${game.stats.workDays}`
+);
+
+const statsEl=
+document.getElementById("profileStats");
+
+if(statsEl){
+
+statsEl.innerHTML=
+`Ações: ${game.stats.actionsCompleted}
+<br>Ganhos: ${money(game.stats.totalEarned)}
+<br>Dividendos: ${money(game.stats.totalDividends)}
+<br>Eventos: ${game.stats.eventsEncountered}
+<br>Aulas concluídas: ${game.stats.lessonsCompleted}
+<br>Cursos concluídos: ${game.stats.studiesCompleted}
+<br>Reputação conquistada: ${game.stats.reputationEarned}
+<br>Dias trabalhados: ${game.stats.workDays}`;
+
+}
+
+const welcomeTitle=
+document.getElementById("welcomeTitle");
+
+if(welcomeTitle){
+
+if(
+game.name &&
+game.name!=="Jogador"
+){
+
+welcomeTitle.textContent=
+`Bem-vindo, ${game.name}!`;
+
+}else{
+
+welcomeTitle.textContent=
+"Sua Jornada Começa";
+
+}
+
+}
+
+renderJobs();
+renderStudies();
+renderInvestments();
+renderBankPortfolio();
+
+updateHeaderUI();
+
+refreshIcons();
+
+}
+
+
+/* =========================================================
+AÇÕES
+========================================================= */
+
+function startAction(type){
+
+if(isPerformingAction){
+return;
+}
+
+let duration=3000;
+
+let title="Executando...";
+
+if(type==="descansar"){
+
+if(game.energy>=100){
+
+notify(
+"Energia Cheia",
+"Você não precisa descansar."
+);
+
+return;
+
+}
+
+title="Descansando...";
+
+}
+
+else if(type==="dormir"){
+
+title="Dormindo...";
+
+duration=5000;
+
+}
+
+else if(type==="estudar"){
+
+if(game.energy<15){
+
+notify(
+"Sem Energia",
+"Você precisa de pelo menos 15% de energia."
+);
+
+return;
+
+}
+
+title="Estudando...";
+
+duration=3500;
+
+}
+
+else if(type==="exercitar"){
+
+if(game.energy<20){
+
+notify(
+"Sem Energia",
+"Você precisa de pelo menos 20% de energia."
+);
+
+return;
+
+}
+
+title="Exercitando-se...";
+
+duration=3500;
+
+}
+
+else if(type==="lazer"){
+
+title="Aproveitando o lazer...";
+
+duration=3000;
+
+}
+
+else if(type==="trabalhar"){
+
+if(!game.job){
+return;
+}
+
+if(
+game.energy<
+game.job.energyCost
+){
+
+notify(
+"Sem Energia",
+"Energia insuficiente para trabalhar."
+);
+
+return;
+
+}
+
+title=
+`Trabalhando como ${game.job.name}...`;
+
+duration=
+game.job.durationMs;
+
+}
+
+else{
+
+return;
+
+}
+
+isPerformingAction=true;
+
+openModal("actionModal");
+
+setText(
+"actionTitle",
+title
+);
+
+const progress=
+document.getElementById(
+"actionProgress"
+);
+
+const percent=
+document.getElementById(
+"actionPercent"
+);
+
+progress.style.width="0%";
+
+percent.textContent="0%";
+
+const start=Date.now();
+
+const interval=setInterval(()=>{
+
+const elapsed=
+Date.now()-start;
+
+const pct=Math.min(
+100,
+Math.floor(
+(elapsed/duration)*100
+)
+);
+
+progress.style.width=
+`${pct}%`;
+
+percent.textContent=
+`${pct}%`;
+
+if(elapsed>=duration){
+
+clearInterval(interval);
+
+closeModal(
+"actionModal"
+);
+
+isPerformingAction=false;
+
+finishAction(type);
+
+}
+
+},50);
+
+}
+
+
+/* =========================================================
+FINALIZAR AÇÃO
+========================================================= */
+
+function finishAction(type){
+
+game.stats.actionsCompleted++;
+
+if(type==="descansar"){
+
+game.energy=
+clamp(
+game.energy+25,
+0,
+100
+);
+
+addReputation(1);
+
+addXP(3);
+
+notify(
+"Descanso",
+"Você recuperou 25% de energia e ganhou 1 ponto de reputação."
+);
+
+}
+
+else if(type==="dormir"){
+
+game.energy=100;
+
+game.health=
+clamp(
+game.health+3,
+0,
+100
+);
+
+addXP(3);
+
+notify(
+"Bom Descanso",
+"Sua energia foi restaurada."
+);
+
+}
+
+else if(type==="estudar"){
+
+game.energy=
+Math.max(
+0,
+game.energy-15
+);
+
+game.intelligence+=2;
+
+addXP(10);
+
+notify(
+"Estudos",
+"+2 Inteligência e +10 XP."
+);
+
+}
+
+else if(type==="exercitar"){
+
+game.energy=
+Math.max(
+0,
+game.energy-20
+);
+
+game.health=
+clamp(
+game.health+5,
+0,
+100
+);
+
+addXP(5);
+
+addReputation(1);
+
+notify(
+"Exercício",
+"+5% Saúde, +5 XP e +1 Reputação."
+);
+
+}
+
+else if(type==="lazer"){
+
+game.energy=
+clamp(
+game.energy+10,
+0,
+100
+);
+
+addXP(2);
+
+notify(
+"Lazer",
+"Você relaxou e recuperou energia."
+);
+
+}
+
+else if(type==="trabalhar"){
+
+const salary=
+Number(game.job.salary)||0;
+
+game.energy=
+Math.max(
+0,
+game.energy-game.job.energyCost
+);
+
+game.cash+=salary;
+
+game.stats.totalEarned+=salary;
+
+game.stats.workDays++;
+
+addXP(
+game.job.xp
+);
+
+addReputation(
+game.job.rep||0
+);
+
+notify(
+"Salário Recebido",
+`Você recebeu ${money(salary)} e ganhou ${game.job.rep||0} de reputação.`
+);
+
+}
+
+saveGame();
+
+renderAll();
+
+}
+
+
+/* =========================================================
+XP
+========================================================= */
+
+function addXP(value){
+
+game.xp+=
+Number(value)||0;
+
+while(
+game.xp>=
+game.level*150
+){
+
+game.xp-=
+game.level*150;
+
+game.level++;
+
+addReputation(5);
+
+notify(
+"Nível Conquistado!",
+`Você alcançou o Nível ${game.level} e ganhou 5 de reputação.`
+);
+
+}
+
+}
+
+
+/* =========================================================
+EMPREGOS
+========================================================= */
+
+function renderJobs(){
+
+const container=
+document.getElementById(
+"jobsList"
+);
+
+if(!container){
+return;
+}
+
+container.innerHTML="";
+
+const list=
+JOBS.filter(j=>
+filterJobCat==="todos" ||
+j.cat===filterJobCat
+);
+
+list.forEach(j=>{
+
+const hasDegree=
+!j.reqDegree ||
+game.degrees.includes(
+j.reqDegree
+);
+
+const canApply=
+game.intelligence>=j.reqIntel &&
+game.reputation>=j.reqRep &&
+hasDegree;
+
+const card=
+document.createElement("div");
+
+card.className="card";
+
+card.innerHTML=`
+
+<b>${j.name}</b>
+
+<p style="
+font-size:12px;
+color:var(--muted);
+margin:6px 0;
+line-height:1.8;
+">
+
+Salário: ${money(j.salary)}
+<br>
+
+Inteligência: ${j.reqIntel}
+<br>
+
+Reputação: ${j.reqRep}
+
+${j.reqDegree
+?`<br>Diploma: ${j.reqDegree}`
+:""}
+
+<br>
+
+Reputação por expediente: +${j.rep}
+
+</p>
+
+<button
+class="btn ${canApply
+?"btn-primary"
+:"btn-light"}"
+${canApply
+?""
+:"disabled"}
+onclick="applyJob('${j.id}')">
+
+${canApply
+?"Candidatar-se"
+:"Requisitos Insuficientes"}
+
+</button>
+
+`;
+
+container.appendChild(card);
+
+});
+
+}
+
+
+/* =========================================================
+ENTREVISTA
+========================================================= */
+
+function applyJob(id){
+
+const job=
+JOBS.find(
+item=>item.id===id
+);
+
+if(!job){
+return;
+}
+
+const content=
+document.getElementById(
+"interviewContent"
+);
+
+content.innerHTML=`
+
+<p style="
+font-size:14px;
+margin-bottom:12px;
+">
+
+<b>Vaga:</b>
+${job.name}
+
+</p>
+
+<p style="
+font-size:14px;
+margin-bottom:12px;
+">
+
+<b>Pergunta:</b>
+${job.interview.q}
+
+</p>
+
+<div style="
+display:flex;
+flex-direction:column;
+gap:8px;
+">
+
+${job.interview.a.map(
+(opt,index)=>`
+
+<button
+class="btn btn-light"
+onclick="answerInterview('${job.id}',${index})">
+
+${opt}
+
+</button>
+
+`
+).join("")}
+
+</div>
+
+`;
+
+openModal(
+"interviewModal"
+);
+
+refreshIcons();
+
+}
+
+
+/* =========================================================
+RESPOSTA ENTREVISTA
+========================================================= */
+
+function answerInterview(
+jobId,
+choiceIdx
+){
+
+const job=
+JOBS.find(
+item=>item.id===jobId
+);
+
+if(!job){
+return;
+}
+
+closeModal(
+"interviewModal"
+);
+
+if(
+choiceIdx===
+job.interview.c
+){
+
+game.job={
+...job
+};
+
+game.profession=
+job.name;
+
+addReputation(3);
+
+notify(
+"Aprovado!",
+`Agora você trabalha como ${job.name}. Você ganhou 3 de reputação.`
+);
+
+}else{
+
+notify(
+"Reprovado",
+"Sua resposta não impressionou o entrevistador."
+);
+
+}
+
+saveGame();
+
+renderAll();
+
+}
+
+
+/* =========================================================
+FILTROS
+========================================================= */
+
+function filterJobs(cat,btn){
+
+filterJobCat=cat;
+
+setActiveTab(btn);
+
+renderJobs();
+
+}
+
+function filterStudies(cat,btn){
+
+filterStudyCat=cat;
+
+setActiveTab(btn);
+
+renderStudies();
+
+}
+
+function filterInvestments(cat,btn){
+
+filterInvestCat=cat;
+
+setActiveTab(btn);
+
+renderInvestments();
+
+}
+
+function setActiveTab(btn){
+
+if(
+!btn ||
+!btn.parentElement
+){
+return;
+}
+
+Array.from(
+btn.parentElement.children
+).forEach(b=>
+b.classList.remove("active")
+);
+
+btn.classList.add("active");
+
+}
+
+
+/* =========================================================
+ESTUDOS
+========================================================= */
+
+function renderStudies(){
+
+const container=
+document.getElementById(
+"studiesList"
+);
+
+if(!container){
+return;
+}
+
+container.innerHTML="";
+
+const list=
+STUDIES.filter(s=>
+filterStudyCat==="todos" ||
+s.cat===filterStudyCat
+);
+
+list.forEach(s=>{
+
+const completed=
+game.completedStudies.includes(
+s.id
+);
+
+const progress=
+Number(
+game.studyProgress[s.id]
+)||0;
+
+const pct=
+Math.min(
+100,
+(progress/s.lessons)*100
+);
+
+const started=
+progress>0;
+
+const card=
+document.createElement("div");
+
+card.className="card";
+
+card.innerHTML=`
+
+<b>${s.name}</b>
+
+<p style="
+font-size:12px;
+color:var(--muted);
+margin:6px 0;
+line-height:1.7;
+">
+
+Custo: ${money(s.cost)}
+<br>
+
+Inteligência ao concluir: +${s.intelBonus}
+<br>
+
+Aulas necessárias: ${s.lessons}
+<br>
+
+XP por aula: +${s.lessonXP}
+<br>
+
+Reputação ao concluir: +${s.completionRep}
+
+${s.degree
+?`<br>Diploma: ${s.degree}`
+:""}
+
+</p>
+
+<div class="study-progress">
+
+<div style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+font-size:11px;
+">
+
+<span class="lesson-badge">
+<i data-lucide="book-open"></i>
+Aulas
+</span>
+
+<b>
+${progress}/${s.lessons}
+</b>
+
+</div>
+
+<div class="progress">
+
+<div
+class="progress-fill"
+style="width:${pct}%">
+</div>
+
+</div>
+
+</div>
+
+<div style="margin-top:12px;">
+
+${
+completed
+?`
+<button class="btn btn-light" disabled>
+<i data-lucide="check"></i>
+Curso Concluído
+</button>
+`
+:
+!started
+?`
+<button
+class="btn btn-primary"
+onclick="buyStudy('${s.id}')">
+
+<i data-lucide="play"></i>
+Matricular-se — ${money(s.cost)}
+
+</button>
+`
+:
+`
+<button
+class="btn btn-primary"
+onclick="attendLesson('${s.id}')">
+
+<i data-lucide="book-open"></i>
+Assistir Próxima Aula
+
+</button>
+`
+}
+
+</div>
+
+`;
+
+container.appendChild(card);
+
+});
+
+refreshIcons();
+
+}
+
+
+/* =========================================================
+MATRÍCULA
+========================================================= */
+
+function buyStudy(id){
+
+const study=
+STUDIES.find(
+item=>item.id===id
+);
+
+if(!study){
+return;
+}
+
+if(
+game.completedStudies.includes(id)
+){
+
+notify(
+"Já Concluído",
+"Você já concluiu este curso."
+);
+
+return;
+
+}
+
+const currentProgress=
+Number(
+game.studyProgress[id]
+)||0;
+
+if(currentProgress>0){
+
+attendLesson(id);
+
+return;
+
+}
+
+if(
+game.cash<study.cost
+){
+
+notify(
+"Sem Dinheiro",
+`Você precisa de ${money(study.cost)} para se matricular.`
+);
+
+return;
+
+}
+
+game.cash-=study.cost;
+
+game.studyProgress[id]=0;
+
+notify(
+"Matrícula Realizada",
+`Você se matriculou em ${study.name}. Agora precisa assistir ${study.lessons} aulas.`
+);
+
+saveGame();
+
+renderAll();
+
+}
+
+
+/* =========================================================
+ASSISTIR AULA
+========================================================= */
+
+function attendLesson(id){
+
+if(isPerformingAction){
+return;
+}
+
+const study=
+STUDIES.find(
+item=>item.id===id
+);
+
+if(!study){
+return;
+}
+
+if(
+game.completedStudies.includes(id)
+){
+
+notify(
+"Curso Concluído",
+"Você já concluiu este curso."
+);
+
+return;
+
+}
+
+let progress=
+Number(
+game.studyProgress[id]
+)||0;
+
+if(progress>=study.lessons){
+
+completeStudy(study);
+
+return;
+
+}
+
+if(
+game.energy<study.lessonEnergy
+){
+
+notify(
+"Sem Energia",
+`Você precisa de ${study.lessonEnergy}% de energia para assistir a uma aula.`
+);
+
+return;
+
+}
+
+isPerformingAction=true;
+
+openModal("actionModal");
+
+setText(
+"actionTitle",
+`Assistindo aula ${progress+1}/${study.lessons}...`
+);
+
+const progressBar=
+document.getElementById(
+"actionProgress"
+);
+
+const percent=
+document.getElementById(
+"actionPercent"
+);
+
+progressBar.style.width="0%";
+
+percent.textContent="0%";
+
+const duration=3000;
+
+const start=Date.now();
+
+const interval=setInterval(()=>{
+
+const elapsed=
+Date.now()-start;
+
+const pct=Math.min(
+100,
+Math.floor(
+(elapsed/duration)*100
+)
+);
+
+progressBar.style.width=
+`${pct}%`;
+
+percent.textContent=
+`${pct}%`;
+
+if(elapsed>=duration){
+
+clearInterval(interval);
+
+closeModal(
+"actionModal"
+);
+
+isPerformingAction=false;
+
+game.energy=
+Math.max(
+0,
+game.energy-study.lessonEnergy
+);
+
+progress++;
+
+game.studyProgress[id]=progress;
+
+game.stats.lessonsCompleted++;
+
+addXP(
+study.lessonXP
+);
+
+notify(
+"Aula Concluída",
+`Aula ${progress}/${study.lessons} concluída.`
+);
+
+if(
+progress>=study.lessons
+){
+
+completeStudy(study);
+
+}else{
+
+saveGame();
+
+renderAll();
+
+}
+
+}
+
+},50);
+
+}
+
+
+/* =========================================================
+CONCLUIR CURSO
+========================================================= */
+
+function completeStudy(study){
+
+if(
+game.completedStudies.includes(
+study.id
+)
+){
+return;
+}
+
+game.completedStudies.push(
+study.id
+);
+
+game.intelligence+=
+study.intelBonus;
+
+addReputation(
+study.completionRep
+);
+
+game.stats.studiesCompleted++;
+
+if(
+study.degree &&
+!game.degrees.includes(
+study.degree
+)
+){
+
+game.degrees.push(
+study.degree
+);
+
+}
+
+addXP(20);
+
+notify(
+"Curso Concluído!",
+`Você concluiu ${study.name}, recebeu +${study.intelBonus} Inteligência e +${study.completionRep} Reputação.`
+);
+
+saveGame();
+
+renderAll();
+
+}
+
+
+/* =========================================================
+INVESTIMENTOS
+========================================================= */
+
+function renderInvestments(){
+
+const container=
+document.getElementById(
+"investGrid"
+);
+
+if(!container){
+return;
+}
+
+container.innerHTML="";
+
+const list=
+INVESTMENTS.filter(i=>
+filterInvestCat==="todos" ||
+i.cat===filterInvestCat
+);
+
+list.forEach(inv=>{
+
+const invested=
+Number(
+game.portfolio[inv.id]
+)||0;
+
+const card=
+document.createElement("div");
+
+card.className="card";
+
+card.innerHTML=`
+
+<b>${inv.name}</b>
+
+<p style="
+font-size:12px;
+color:var(--muted);
+margin:6px 0;
+line-height:1.7;
+">
+
+Mínimo: ${money(inv.min)}
+
+<br>
+
+Retorno:
+${(inv.dailyReturn*100).toFixed(2)}%
+ao dia
+
+<br>
+
+Investido:
+${money(invested)}
+
+</p>
+
+<button
+class="btn btn-primary"
+onclick="investPrompt('${inv.id}')">
+
+Investir
+
+</button>
+
+`;
+
+container.appendChild(card);
+
+});
+
+}
+
+
+/* =========================================================
+INVESTIR
+========================================================= */
+
+function investPrompt(id){
+
+const inv=
+INVESTMENTS.find(
+i=>i.id===id
+);
+
+if(!inv){
+return;
+}
+
+const value=prompt(
+`Quanto deseja investir em ${inv.name}?
+
+Mínimo: ${money(inv.min)}
+
+Saldo da Carteira: ${money(game.investmentWallet)}`
+);
+
+if(value===null){
+return;
+}
+
+const amount=Number(
+String(value)
+.replace(/\./g,"")
+.replace(",",".")
+);
+
+if(
+!Number.isFinite(amount) ||
+amount<inv.min
+){
+
+notify(
+"Valor Inválido",
+`O mínimo é ${money(inv.min)}.`
+);
+
+return;
+
+}
+
+if(
+amount>
+game.investmentWallet
+){
+
+notify(
+"Saldo Insuficiente",
+"Transfira dinheiro do Banco para a Carteira de Investimentos."
+);
+
+return;
+
+}
+
+game.investmentWallet-=amount;
+
+game.portfolio[inv.id]=
+(
+Number(game.portfolio[inv.id])||0
+)+amount;
+
+notify(
+"Investimento Realizado",
+`${money(amount)} aplicados em ${inv.name}.`
+);
+
+saveGame();
+
+renderAll();
+
+}
+
+
+/* =========================================================
+PORTFÓLIO
+========================================================= */
+
+function renderBankPortfolio(){
+
+const container=
+document.getElementById(
+"bankPortfolioList"
+);
+
+if(!container){
+return;
+}
+
+container.innerHTML="";
+
+const active=
+Object.keys(
+game.portfolio
+).filter(id=>
+(
+Number(
+game.portfolio[id]
+)||0
+)>0
+);
+
+if(active.length===0){
+
+container.innerHTML=`
+
+<p style="
+font-size:12px;
+color:var(--muted);
+">
+
+Nenhuma aplicação ativa.
+
+</p>
+
+`;
+
+return;
+
+}
+
+active.forEach(id=>{
+
+const amount=
+Number(
+game.portfolio[id]
+)||0;
+
+const inv=
+INVESTMENTS.find(
+i=>i.id===id
+);
+
+if(!inv){
+return;
+}
+
+const item=
+document.createElement("div");
+
+item.className=
+"invest-portfolio-item";
+
+item.innerHTML=`
+
+<div>
+
+<b>${inv.name}</b>
+
+<span style="
+display:block;
+font-size:11px;
+color:var(--muted);
+margin-top:3px;
+">
+
+Aplicado:
+${money(amount)}
+
+<br>
+
+Dividendo diário estimado:
+${money(amount*inv.dailyReturn)}
+
+</span>
+
+</div>
+
+<button
+class="btn btn-sm btn-light"
+onclick="withdrawInvest('${id}')">
+
+Resgatar
+
+</button>
+
+`;
+
+container.appendChild(item);
+
+});
+
+}
+
+
+/* =========================================================
+RESGATAR
+========================================================= */
+
+function withdrawInvest(id){
+
+const amount=
+Number(
+game.portfolio[id]
+)||0;
+
+if(amount<=0){
+
+notify(
+"Sem Investimento",
+"Não existe valor para resgatar."
+);
+
+return;
+
+}
+
+game.investmentWallet+=amount;
+
+delete game.portfolio[id];
+
+notify(
+"Resgate Concluído",
+`${money(amount)} voltou para sua Carteira de Investimentos.`
+);
+
+saveGame();
+
+renderAll();
+
+}
+
+
+/* =========================================================
+BANCO → INVESTIMENTO
+========================================================= */
+
+function transferToInvestment(){
+
+if(game.bank<=0){
+
+notify(
+"Saldo Insuficiente",
+"Você não possui dinheiro no Banco."
+);
+
+return;
+
+}
+
+const value=prompt(
+`Quanto deseja transferir?
+
+Saldo bancário: ${money(game.bank)}`
+);
+
+if(value===null){
+return;
+}
+
+const amount=Number(
+String(value)
+.replace(/\./g,"")
+.replace(",",".")
+);
+
+if(
+!Number.isFinite(amount) ||
+amount<=0
+){
+
+notify(
+"Valor Inválido",
+"Digite um valor válido."
+);
+
+return;
+
+}
+
+if(amount>game.bank){
+
+notify(
+"Saldo Insuficiente",
+"Você não possui esse valor no Banco."
+);
+
+return;
+
+}
+
+game.bank-=amount;
+
+game.investmentWallet+=amount;
+
+notify(
+"Transferência Realizada",
+`${money(amount)} foi para sua Carteira de Investimentos.`
+);
+
+saveGame();
+
+renderAll();
+
+}
+
+
+/* =========================================================
+INVESTIMENTO → BANCO
+========================================================= */
+
+function transferFromInvestment(){
+
+if(game.investmentWallet<=0){
+
+notify(
+"Carteira Vazia",
+"Não existe dinheiro disponível na Carteira de Investimentos."
+);
+
+return;
+
+}
+
+const value=prompt(
+`Quanto deseja retirar?
+
+Carteira: ${money(game.investmentWallet)}`
+);
+
+if(value===null){
+return;
+}
+
+const amount=Number(
+String(value)
+.replace(/\./g,"")
+.replace(",",".")
+);
+
+if(
+!Number.isFinite(amount) ||
+amount<=0
+){
+
+notify(
+"Valor Inválido",
+"Digite um valor válido."
+);
+
+return;
+
+}
+
+if(
+amount>
+game.investmentWallet
+){
+
+notify(
+"Saldo Insuficiente",
+"Você não possui esse valor na Carteira."
+);
+
+return;
+
+}
+
+game.investmentWallet-=amount;
+
+game.bank+=amount;
+
+notify(
+"Transferência Realizada",
+`${money(amount)} foi transferido para o Banco.`
+);
+
+saveGame();
+
+renderAll();
+
+}
+
+
+/* =========================================================
+DEPÓSITO
+========================================================= */
+
+function depositPrompt(){
+
+const value=prompt(
+`Quanto deseja depositar?
+
+Dinheiro em mãos: ${money(game.cash)}`
+);
+
+if(value===null){
+return;
+}
+
+const amount=Number(
+String(value)
+.replace(/\./g,"")
+.replace(",",".")
+);
+
+if(
+!Number.isFinite(amount) ||
+amount<=0
+){
+
+notify(
+"Valor Inválido",
+"Digite um valor válido."
+);
+
+return;
+
+}
+
+if(amount>game.cash){
+
+notify(
+"Saldo Insuficiente",
+"Você não possui esse dinheiro em mãos."
+);
+
+return;
+
+}
+
+game.cash-=amount;
+
+game.bank+=amount;
+
+notify(
+"Depósito",
+`${money(amount)} depositados no Banco.`
+);
+
+saveGame();
+
+renderAll();
+
+}
+
+
+/* =========================================================
+SAQUE
+========================================================= */
+
+function withdrawPrompt(){
+
+const value=prompt(
+`Quanto deseja sacar?
+
+Saldo bancário: ${money(game.bank)}`
+);
+
+if(value===null){
+return;
+}
+
+const amount=Number(
+String(value)
+.replace(/\./g,"")
+.replace(",",".")
+);
+
+if(
+!Number.isFinite(amount) ||
+amount<=0
+){
+
+notify(
+"Valor Inválido",
+"Digite um valor válido."
+);
+
+return;
+
+}
+
+if(amount>game.bank){
+
+notify(
+"Saldo Insuficiente",
+"Você não possui esse valor no Banco."
+);
+
+return;
+
+}
+
+game.bank-=amount;
+
+game.cash+=amount;
+
+notify(
+"Saque",
+`${money(amount)} retirados do Banco.`
+);
+
+saveGame();
+
+renderAll();
+
+}
+
+
+/* =========================================================
+EMPRÉSTIMO
+========================================================= */
+
+function takeLoan(){
+
+if(game.loan>0){
+
+notify(
+"Empréstimo Ativo",
+"Quite o empréstimo atual antes de pegar outro."
+);
+
+return;
+
+}
+
+game.bank+=500;
+
+game.loan=500;
+
+notify(
+"Empréstimo Aprovado",
+"R$ 500 foram adicionados à sua conta."
+);
+
+saveGame();
+
+renderAll();
+
+}
+
+
+function payLoan(){
+
+if(game.loan<=0){
+
+notify(
+"Sem Dívida",
+"Você não possui empréstimo."
+);
+
+return;
+
+}
+
+if(
+game.bank<
+game.loan
+){
+
+notify(
+"Saldo Insuficiente",
+"Saldo bancário insuficiente para quitar a dívida."
+);
+
+return;
+
+}
+
+const paid=
+game.loan;
+
+game.bank-=
+game.loan;
+
+game.loan=0;
+
+notify(
+"Empréstimo Quitado",
+`Você pagou ${money(paid)}.`
+);
+
+saveGame();
+
+renderAll();
+
+}
+
+
+/* =========================================================
+PERFIL
+========================================================= */
+
+function saveProfile(){
+
+const input=
+document.getElementById(
+"profileName"
+);
+
+const name=
+input.value.trim();
+
+if(!name){
+
+notify(
+"Nome Inválido",
+"Digite um nome."
+);
+
+return;
+
+}
+
+game.name=name;
+
+saveGame();
+
+renderAll();
+
+notify(
+"Perfil Salvo",
+"Seu nome foi atualizado."
+);
+
+}
+
+
+/* =========================================================
+NAVEGAÇÃO
+========================================================= */
+
+function showPage(pageId){
+
+const page=
+document.getElementById(
+pageId
+);
+
+if(!page){
+return;
+}
+
+document.querySelectorAll(
+".page"
+).forEach(p=>
+p.classList.remove("active")
+);
+
+page.classList.add("active");
+
+document.querySelectorAll(
+".nav-btn,.bottom-btn"
+).forEach(button=>{
+
+const onclick=
+button.getAttribute(
+"onclick"
+)||"";
+
+button.classList.toggle(
+"active",
+onclick.includes(
+`showPage('${pageId}')`
+)
+);
+
+});
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+refreshIcons();
+
+}
+
+
+/* =========================================================
+MODAIS
+========================================================= */
+
+function openModal(id){
+
+const modal=
+document.getElementById(id);
+
+if(modal){
+modal.classList.add("show");
+}
+
+}
+
+function closeModal(id){
+
+const modal=
+document.getElementById(id);
+
+if(modal){
+modal.classList.remove("show");
+}
+
+}
+
+
+/* =========================================================
+NOTIFICAÇÃO
+========================================================= */
+
+function notify(title,msg){
+
+const container=
+document.getElementById(
+"notifications"
+);
+
+if(!container){
+return;
+}
+
+const el=
+document.createElement("div");
+
+el.className=
+"notification";
+
+el.innerHTML=`
+
+<b>${escapeHTML(title)}</b>
+
+<span>${escapeHTML(msg)}</span>
+
+`;
+
+container.appendChild(el);
+
+setTimeout(()=>{
+
+if(el.parentNode){
+el.remove();
+}
+
+},4500);
+
+}
+
+
+/* =========================================================
+SEGURANÇA DE TEXTO
+========================================================= */
+
+function escapeHTML(value){
+
+return String(value)
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+EVENTOS ALEATÓRIOS
+========================================================= */
+
+function triggerRandomEvent(){
+
+const eventModal=
+document.querySelector(
+"#eventModal.show"
+);
+
+if(eventModal){
+return;
+}
+
+const evt=
+RANDOM_EVENTS[
+Math.floor(
+Math.random()*
+RANDOM_EVENTS.length
+)
+];
+
+game.stats.eventsEncountered++;
+
+setText(
+"eventModalTitle",
+`⚠️ ${evt.title}`
+);
+
+setText(
+"eventModalDesc",
+evt.desc
+);
+
+const container=
+document.getElementById(
+"eventChoices"
+);
+
+container.innerHTML="";
+
+evt.choices.forEach(choice=>{
+
+const button=
+document.createElement(
+"button"
+);
+
+button.className=
+"btn btn-primary";
+
+button.textContent=
+choice.text;
+
+button.onclick=()=>{
+
+const message=
+choice.action(game);
+
+closeModal(
+"eventModal"
+);
+
+notify(
+evt.title,
+message
+);
+
+saveGame();
+
+renderAll();
+
+};
+
+container.appendChild(
+button
+);
+
+});
+
+openModal(
+"eventModal"
+);
+
+}
+
+
+/* =========================================================
+EVENTOS AUTOMÁTICOS
+========================================================= */
+
+function maybeTriggerRandomEvent(){
+
+if(
+game.day===lastEventDay
+){
+return;
+}
+
+lastEventDay=game.day;
+
+if(
+Math.random()<0.20
+){
+
+setTimeout(
+triggerRandomEvent,
+1000
+);
+
+}
+
+}
+
+
+/* =========================================================
+FECHAR MODAIS CLICANDO FORA
+========================================================= */
+
+document
+.querySelectorAll(".modal")
+.forEach(modal=>{
+
+modal.addEventListener(
+"click",
+e=>{
+
+if(e.target!==modal){
+return;
+}
+
+if(
+modal.id!=="actionModal" &&
+modal.id!=="eventModal"
+){
+
+modal.classList.remove(
+"show"
+);
+
+}
+
+}
+);
+
+});
+
+
+/* =========================================================
+INICIALIZAÇÃO
+========================================================= */
+
+function init(){
+
+loadGame();
+
+normalizeGame();
+
+processOfflineTime();
+
+renderAll();
+
+refreshIcons();
+
+startRealTimeClock();
+
+saveGame();
+
+}
+
+
+/* =========================================================
+INICIAR
+========================================================= */
+
+window.addEventListener(
+"load",
+init
+);
+
+</script></body>
+</html>
